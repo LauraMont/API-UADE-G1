@@ -34,21 +34,16 @@ public class Evento {
     private String estado;
     
     @Column
-    private String imagen_url;
+    private String categoria;
 
     @Column
-    private String imagen_zona_url;
+    private int stock_entradas;
 
-    @OneToOne
-    @JoinColumn(name = "artista_id", referencedColumnName = "id")
-    private Artista artista;
+    @Column
+    private int cant_entradas;
 
-    @OneToOne
-    @JoinColumn(name = "locacion_id", referencedColumnName = "id")
-    private Locacion locacion;
-
-    @OneToMany(mappedBy = "evento")
-    private List<Entrada> entrada;
+    @OneToOne(mappedBy = "evento")
+    private Compra compra;
 
 
 }

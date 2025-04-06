@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Data
@@ -28,13 +29,14 @@ public class Compra {
     private Long total;
 
     @Column
-    private String estado;
+    private int cant_entradas;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "compra")
-    private List<RenglonDeCompra> renglonDeCompras;
+    @OneToOne
+    @JoinColumn(name = "evento_id", referencedColumnName = "id")
+    private Evento evento;
     
 }
