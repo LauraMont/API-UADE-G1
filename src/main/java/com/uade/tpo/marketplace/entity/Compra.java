@@ -1,7 +1,6 @@
 package com.uade.tpo.marketplace.entity;
 
 import java.sql.Date;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,12 +9,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Data
 @Entity
 public class Compra {
+
+    public Compra() {
+    }
+    public Compra( Long id_user, Long id_evento,int cantidad , float total) {
+        this.fecha = new Date(System.currentTimeMillis());
+        this.total = total;
+        this.cantidad = cantidad;
+        this.id_user = id_user;
+        this.id_evento = id_evento;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +33,21 @@ public class Compra {
     private Date fecha;
 
     @Column
-    private Long total;
+    private float total;
 
     @Column
-    private String estado;
+    private int cantidad;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    private Long id_user;
 
-    @OneToMany(mappedBy = "compra")
-    private List<RenglonDeCompra> renglonDeCompras;
+    @ManyToOne
+    @JoinColumn(name = "evento_id", nullable = false)
+    private Long id_evento;
+
+    public Long getIdCompra() {
+        return id;
+    }
     
 }
