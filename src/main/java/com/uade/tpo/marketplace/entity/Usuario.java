@@ -30,9 +30,6 @@ public class Usuario {
     private String contraseña;
 
     @Column
-    private int telefono;
-
-    @Column
     private String rol;
 
     @Column
