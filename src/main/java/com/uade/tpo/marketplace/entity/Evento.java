@@ -37,9 +37,6 @@ public class Evento {
     private String categoria;
 
     @Column
-    private int stock_entradas;
-
-    @Column
     private int cant_entradas;
 
     @OneToOne(mappedBy = "evento")
