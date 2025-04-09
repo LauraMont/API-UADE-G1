@@ -12,6 +12,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -22,8 +23,12 @@ public class ComprasController {
     private ComprasService comprasService;
 
     @PostMapping
-    public ResponseEntity<Object> createCompra(Long idUsuario, Long idProducto, int cantidad, float total) throws UserNotExistException, EventNotExistException {
-        Compra result = comprasService.createCompra(idUsuario, idProducto, cantidad, total);
+    public ResponseEntity<Object> createCompra(@RequestBody CompraRequest compra) throws UserNotExistException, EventNotExistException {
+        int cantidadInt = compra.getCantidad();
+        Float totalFloat =compra.getTotal();
+        Long idUsuario = compra.getUsuarioId();
+        Long idProducto = compra.getEventoId();
+        Compra result = comprasService.createCompra(idUsuario, idProducto, cantidadInt, totalFloat);
         return ResponseEntity.created(URI.create("/compras/" + result.getIdCompra())).body(result);
     }
 }

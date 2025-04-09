@@ -17,6 +17,7 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
     @Column
@@ -37,6 +38,4 @@ public class Usuario {
     @Column
     private Date fecha_registro;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Compra> compra;
 }

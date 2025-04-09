@@ -17,12 +17,12 @@ public class Compra {
 
     public Compra() {
     }
-    public Compra( Long id_user, Long id_evento,int cantidad , float total) {
+    public Compra( Usuario usuario, Evento evento,int cantidad , float total) {
         this.fecha = new Date(System.currentTimeMillis());
         this.total = total;
         this.cantidad = cantidad;
-        this.id_user = id_user;
-        this.id_evento = id_evento;
+        this.usuario = usuario;
+        this.evento = evento;
     }
 
     @Id
@@ -40,14 +40,20 @@ public class Compra {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Long id_user;
+    private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "evento_id", nullable = false)
-    private Long id_evento;
+    private Evento evento;
 
     public Long getIdCompra() {
         return id;
+    }
+    public Long getIdUsuario() {
+       return this.usuario.getId();
+    }
+    public Long getIdProducto() {
+        return this.evento.getId();
     }
     
 }
