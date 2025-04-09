@@ -6,6 +6,14 @@ public class CompraRequest {
     private int cantidad;
     private float total;
 
+    CompraRequest() {
+    }
+    public CompraRequest(Long usuarioId, Long eventoId, int cantidad, float total) {
+        this.usuarioId = usuarioId;
+        this.eventoId = eventoId;
+        this.cantidad = cantidad;
+        this.total = total;
+    }
     // Getters y setters
     public Long getUsuarioId() {
         return usuarioId;

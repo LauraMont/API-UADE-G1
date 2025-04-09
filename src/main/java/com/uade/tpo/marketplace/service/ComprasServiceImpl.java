@@ -7,6 +7,7 @@ import com.uade.tpo.marketplace.entity.Compra;
 import com.uade.tpo.marketplace.entity.Evento;
 import com.uade.tpo.marketplace.entity.Usuario;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
+import com.uade.tpo.marketplace.exceptions.StockMaxReached;
 import com.uade.tpo.marketplace.exceptions.UserNotExistException;
 import com.uade.tpo.marketplace.repository.ComprasRepository;
 import com.uade.tpo.marketplace.repository.EventoRepository;
@@ -21,9 +22,13 @@ public class ComprasServiceImpl implements ComprasService{
     @Autowired
     private UsuariosRepository usuariosRepository;
 
-    public Compra createCompra(Long idUsuario, Long idEvento, int cantidad, float total) throws UserNotExistException, EventNotExistException {
+    public Compra createCompra(Long idUsuario, Long idEvento, int cantidad, float total) throws UserNotExistException, EventNotExistException, StockMaxReached {
         Usuario user = (Usuario) this.usuariosRepository.findById(idUsuario).orElseThrow(() -> new UserNotExistException());
         Evento evento = (Evento) this.eventosRepository.findById(idEvento).orElseThrow(() -> new EventNotExistException());
+        if(evento.getStock() - cantidad < 0) {
+            throw new StockMaxReached();
+        }
+        this.eventosRepository.updateStock(idEvento, evento.getStock() - cantidad);
         if(cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor a cero.");
         }

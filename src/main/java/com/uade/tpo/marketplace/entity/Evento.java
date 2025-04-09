@@ -45,5 +45,9 @@ public class Evento {
     @OneToOne(mappedBy = "evento")
     private Compra compra;
 
+    public int getStock() {
+        return cant_entradas;
+    }
+
 
 }
