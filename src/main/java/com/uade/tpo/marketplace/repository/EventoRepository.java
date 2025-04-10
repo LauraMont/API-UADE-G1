@@ -19,7 +19,7 @@ import java.util.List;
 public interface EventoRepository extends JpaRepository<Evento, Long> {
    @Modifying
    @Transactional
-   @Query("UPDATE Evento e SET e.cantEntradas = ?2 WHERE e.id = ?1")
+   @Query("UPDATE Evento e SET e.stockEntradas = ?2 WHERE e.id = ?1")
    void updateStock(Long eventoId, int stockEntradas); 
 
     @Modifying
