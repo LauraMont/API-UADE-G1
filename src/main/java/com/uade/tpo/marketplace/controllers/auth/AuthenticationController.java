@@ -31,10 +31,4 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<AuthenticationResponse> deleteUser(@RequestBody AuthenticationRequest request) {
-        service.deleteUser(request); // Llama al método del servicio
-        return ResponseEntity.noContent().build(); // Retorna 204 No Content
-        
-}
 }
