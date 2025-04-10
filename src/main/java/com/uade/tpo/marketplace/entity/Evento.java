@@ -60,7 +60,7 @@ public class Evento {
     private EstadoEvento estado;
 
     @OneToMany(mappedBy = "evento")
-    private Compra compra;
+    private List<Compra> compra;
 
 
     @ManyToOne
