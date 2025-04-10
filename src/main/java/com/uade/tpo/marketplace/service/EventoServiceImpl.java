@@ -6,6 +6,7 @@ import com.uade.tpo.marketplace.entity.Evento;
 import com.uade.tpo.marketplace.enums.EstadoEvento;
 import com.uade.tpo.marketplace.exceptions.EventDuplicateException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
+import com.uade.tpo.marketplace.repository.CategoriaRepository;
 import com.uade.tpo.marketplace.repository.EventoRepository;
 
 import java.sql.Date;
@@ -19,8 +20,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventoServiceImpl implements EventoService {
 
+    private final CategoriaRepository categoriaRepository;
+
     @Autowired
     private EventoRepository eventoRepository;
+
+    EventoServiceImpl(CategoriaRepository categoriaRepository) {
+        this.categoriaRepository = categoriaRepository;
+    }
 
     public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artista, EstadoEvento estado, Categoria categoria, int cant_entradas) throws EventDuplicateException {
         // Verificar si el evento ya existe
@@ -60,7 +67,8 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public List<Evento> buscarPorNombre(String nombre) {
-        return eventoRepository.findByNombreContainingIgnoreCase(nombre);
+        Long categoriaId = categoriaRepository.findByNombreIgnoreCase(nombre).get().getId();
+        return eventoRepository.findByCategoriaId(categoriaId);
     }
 
     @Override
