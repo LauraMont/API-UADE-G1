@@ -20,11 +20,11 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity<List<Categoria>> getCategorias() {
+    public ResponseEntity<List<Categoria>> getCategorias() { // all users can see all categories
         return ResponseEntity.ok(categoriaService.getCategorias());
     }
 
-    @GetMapping("/nombre/{nombre}")
+    @GetMapping("/nombre/{nombre}") // all users can see all categories
     public ResponseEntity<Categoria> getCategoryByName(@PathVariable String nombre) {
         Optional<Categoria> result = categoriaService.getCategoriaByName(nombre);
         return result.map(ResponseEntity::ok)
@@ -32,7 +32,7 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createCategory(@RequestBody CategoriaRequest categoriaRequest)
+    public ResponseEntity<Object> createCategory(@RequestBody CategoriaRequest categoriaRequest) // only admin can create categories
             throws CategoryDuplicateException {
         Categoria result = categoriaService.createCategoria(categoriaRequest.getNombre(), categoriaRequest.getDescripcion());
         return ResponseEntity.created(URI.create("/categoria/" + result.getId())).body(result);

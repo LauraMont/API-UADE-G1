@@ -23,17 +23,12 @@ public class EventoController {
     @Autowired
     private EventoService eventoService;
 
-    // @GetMapping
-    // public List<Evento> obtenerTodos() {
-    //     return eventoService.obtenerTodos();
-    // }
-
-    @GetMapping("/disponibles")
+    @GetMapping("/disponibles") // all users can see available events
     public List<Evento> disponibles() {
         return eventoService.obtenerDisponibles();
     }
 
-    @GetMapping("/buscar")
+    @GetMapping("/buscar") // all users can search events by name, category or artist
     public ResponseEntity<List<Evento>> buscar(
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String categoria,
@@ -57,7 +52,7 @@ public class EventoController {
 
     @PostMapping // only admin can create events
     public ResponseEntity<Evento> crearEvento( @RequestBody EventoRequest request) throws EventDuplicateException {
-        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), Date.valueOf(request.getFechaHora()), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
+        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
         return ResponseEntity.ok(nuevoEvento);
     }
 
@@ -67,7 +62,7 @@ public class EventoController {
     }
     @PutMapping("/{id}") // only admin can edit events
     public ResponseEntity<String> editEvento(@PathVariable Long id, @RequestBody EventoRequest request) throws EventNotExistException {
-        eventoService.editEvento(id, request.getNombre(), request.getDescripcion(), Date.valueOf(request.getFechaHora()), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
+        eventoService.editEvento(id, request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
         return ResponseEntity.ok("Evento editado correctamente");
     }
     @DeleteMapping("/{id}") // only admin can delete events
