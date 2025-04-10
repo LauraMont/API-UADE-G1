@@ -41,13 +41,13 @@ public class EventoController {
         return ResponseEntity.ok(eventoService.getEventoById(id));
     }
     @PutMapping("/{id}") // only admin can edit events
-    public ResponseEntity<Void> editEvento(@PathVariable Long id, @RequestBody EventoRequest request) throws EventNotExistException {
+    public ResponseEntity<String> editEvento(@PathVariable Long id, @RequestBody EventoRequest request) throws EventNotExistException {
         eventoService.editEvento(id, request.getNombre(), request.getDescripcion(), Date.valueOf(request.getFecha_hora()), request.getEstado(), request.getCategoria(), request.getCant_entradas());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Evento editado correctamente");
     }
     @DeleteMapping("/{id}") // only admin can delete events
-    public ResponseEntity<Void> deleteEvento(@PathVariable Long id) throws EventNotExistException {
+    public ResponseEntity<String> deleteEvento(@PathVariable Long id) throws EventNotExistException {
         eventoService.deleteEvento(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Evento eliminado correctamente");
     }
 }

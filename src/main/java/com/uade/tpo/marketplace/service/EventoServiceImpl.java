@@ -42,18 +42,18 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String estado, String categoria, int cant_entradas) throws EventNotExistException {
-        if (eventoRepository.existsById(eventoId)) {
-            eventoRepository.updateEvento(eventoId, nombre, descripcion, fecha_hora, estado, categoria, cant_entradas);
+        if (!eventoRepository.existsById(eventoId)) {
+            throw new EventNotExistException();
         }
-        throw new EventNotExistException();
+        eventoRepository.updateEvento(eventoId, nombre, descripcion, fecha_hora, estado, categoria, cant_entradas);
     }
 
     @Override
     public void deleteEvento(Long eventoId) throws EventNotExistException {
-        if (eventoRepository.existsById(eventoId)) {
-            eventoRepository.deleteById(eventoId);
+        if (!eventoRepository.existsById(eventoId)) {
+            throw new EventNotExistException();
         }
-        throw new EventNotExistException();
+        eventoRepository.deleteById(eventoId);
     }
 
 }
