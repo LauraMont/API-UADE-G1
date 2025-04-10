@@ -10,24 +10,24 @@ import com.uade.tpo.marketplace.entity.Categories;
 import com.uade.tpo.marketplace.exceptions.CategoryDuplicateException;
 import com.uade.tpo.marketplace.repository.CategoryRepository;
 
-@Service // define la capa de dependencias del servicio (es una implementación de algo)
-public class CategoryServiceImplementation implements CategoryService{
-    @Autowired
-    private CategoryRepository categoryRepository;
+// @Service // define la capa de dependencias del servicio (es una implementación de algo)
+// public class CategoryServiceImplementation implements CategoryService{
+    // @Autowired
+    // private CategoryRepository categoryRepository;
 
-    public List<Categories> getCategories() {
-        return categoryRepository.findAll();
-    }
+    // public List<Categories> getCategories() {
+    //     return categoryRepository.findAll();
+    // }
 
-    public Optional<Categories> getCategoryById(Long categoryId) {
-        return categoryRepository.findById(categoryId);
-    }
+    // public Optional<Categories> getCategoryById(Long categoryId) {
+    //     return categoryRepository.findById(categoryId);
+    // }
 
-    public Categories createCategory(String description) throws CategoryDuplicateException {
-        List<Categories> categories = categoryRepository.findByDescription(description);
-        if (categories.isEmpty())
-            return categoryRepository.save(new Categories());
-        throw new CategoryDuplicateException();
-    }
+    // public Categories createCategory(String description) throws CategoryDuplicateException {
+    //     List<Categories> categories = categoryRepository.findByDescription(description);
+    //     if (categories.isEmpty())
+    //         return categoryRepository.save(new Categories());
+    //     throw new CategoryDuplicateException();
+    // }
     
-}
+//}

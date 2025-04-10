@@ -11,7 +11,7 @@ import com.uade.tpo.marketplace.exceptions.StockMaxReached;
 import com.uade.tpo.marketplace.exceptions.UserNotExistException;
 import com.uade.tpo.marketplace.repository.ComprasRepository;
 import com.uade.tpo.marketplace.repository.EventoRepository;
-import com.uade.tpo.marketplace.repository.UsuariosRepository;
+import com.uade.tpo.marketplace.repository.UserRepository;
 
 @Service
 public class ComprasServiceImpl implements ComprasService{
@@ -20,7 +20,7 @@ public class ComprasServiceImpl implements ComprasService{
     @Autowired
     private ComprasRepository comprasRepository;
     @Autowired
-    private UsuariosRepository usuariosRepository;
+    private UserRepository usuariosRepository;
 
     public Compra createCompra(Long idUsuario, Long idEvento, int cantidad, float total) throws UserNotExistException, EventNotExistException, StockMaxReached {
         Usuario user = (Usuario) this.usuariosRepository.findById(idUsuario).orElseThrow(() -> new UserNotExistException());
