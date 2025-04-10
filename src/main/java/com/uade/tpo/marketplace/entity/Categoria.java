@@ -1,5 +1,6 @@
 package com.uade.tpo.marketplace.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,14 +24,17 @@ public class Categoria {
     public Categoria() {
     }
 
+    @Column
     public Long getId() {
         return id;
     }
 
+    @Column
     public String getNombre() {
         return nombre;
     }
 
+    @Column
     public String getDescripcion() {
         return descripcion;
     }

@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import com.uade.tpo.marketplace.enums.EstadoEvento;
 import lombok.Data;
@@ -58,8 +59,9 @@ public class Evento {
     @Enumerated(EnumType.STRING)
     private EstadoEvento estado;
 
-    @OneToOne(mappedBy = "evento") // TODO: creo que seria one to many
+    @OneToMany(mappedBy = "evento")
     private Compra compra;
+
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
