@@ -34,8 +34,8 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     @Query("SELECT e FROM Evento e WHERE LOWER(e.nombre) = LOWER(?1)")
     List<Evento> findByNombreContainingIgnoreCase(String nombre);
 
-    @Query("SELECT e FROM Evento e WHERE LOWER(e.categoria.nombre) = LOWER(?1)")
-    List<Evento> findByCategoriaNombreContainingIgnoreCase(String categoria);
+    @Query("SELECT e FROM Evento e WHERE e.categoria = ?1")
+    List<Evento> findByCategoriaId(Long categoriaId);
 
     @Query("SELECT e FROM Evento e WHERE LOWER(e.artista) = LOWER(?1)")
     List<Evento> findByArtistaContainingIgnoreCase(String artista);
