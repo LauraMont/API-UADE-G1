@@ -1,6 +1,7 @@
 package com.uade.tpo.marketplace.controllers;
 
 import com.uade.tpo.marketplace.entity.Evento;
+import com.uade.tpo.marketplace.entity.dto.EventoRequest;
 import com.uade.tpo.marketplace.exceptions.EventDuplicateException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
 import com.uade.tpo.marketplace.service.EventoService;
@@ -13,12 +14,36 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/eventos")
 public class EventoController {
 
     @Autowired
     private EventoService eventoService;
+
+    // @GetMapping
+    // public List<Evento> obtenerTodos() {
+    //     return eventoService.obtenerTodos();
+    // }
+
+    @GetMapping("/disponibles")
+    public List<Evento> disponibles() {
+        return eventoService.obtenerDisponibles();
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Evento>> buscar(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String artista
+    ) {
+        if (nombre != null) return ResponseEntity.ok(eventoService.buscarPorNombre(nombre));
+        if (categoria != null) return ResponseEntity.ok(eventoService.buscarPorCategoria(categoria));
+        if (artista != null) return ResponseEntity.ok(eventoService.buscarPorArtista(artista));
+        return ResponseEntity.ok(eventoService.getEventos(PageRequest.of(0, Integer.MAX_VALUE)).getContent()); // Return all events if no filter is applied
+    }
 
     @GetMapping // all users can see all events
     public ResponseEntity<Page<Evento>> getEventos(
@@ -32,7 +57,7 @@ public class EventoController {
 
     @PostMapping // only admin can create events
     public ResponseEntity<Evento> crearEvento( @RequestBody EventoRequest request) throws EventDuplicateException {
-        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), Date.valueOf(request.getFecha_hora()), request.getEstado(), request.getCategoria(), request.getCant_entradas());
+        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), Date.valueOf(request.getFechaHora()), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
         return ResponseEntity.ok(nuevoEvento);
     }
 
@@ -42,7 +67,7 @@ public class EventoController {
     }
     @PutMapping("/{id}") // only admin can edit events
     public ResponseEntity<String> editEvento(@PathVariable Long id, @RequestBody EventoRequest request) throws EventNotExistException {
-        eventoService.editEvento(id, request.getNombre(), request.getDescripcion(), Date.valueOf(request.getFecha_hora()), request.getEstado(), request.getCategoria(), request.getCant_entradas());
+        eventoService.editEvento(id, request.getNombre(), request.getDescripcion(), Date.valueOf(request.getFechaHora()), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
         return ResponseEntity.ok("Evento editado correctamente");
     }
     @DeleteMapping("/{id}") // only admin can delete events
