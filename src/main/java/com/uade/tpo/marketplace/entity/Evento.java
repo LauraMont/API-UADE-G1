@@ -1,21 +1,29 @@
 package com.uade.tpo.marketplace.entity;
 
 import java.sql.Date;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Data
 @Entity
 public class Evento {
+
+    public Evento() {
+    }
+    public Evento(String nombre, String descripcion, Date fecha_hora, String estado, String categoria, int cant_entradas) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.fecha_hora = fecha_hora;
+        this.estado = estado;
+        this.categoria = categoria;
+        this.cant_entradas = cant_entradas;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

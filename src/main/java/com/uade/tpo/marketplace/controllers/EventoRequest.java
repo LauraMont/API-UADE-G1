@@ -5,9 +5,10 @@ import lombok.Data;
 public class EventoRequest {
 
     private String nombre;
-
+    private String descripcion;
+    private String fecha_hora;
+    private String estado;
     private String categoria;
-
-    private Integer cant_entradas;
+    private int cant_entradas;
 }
 
