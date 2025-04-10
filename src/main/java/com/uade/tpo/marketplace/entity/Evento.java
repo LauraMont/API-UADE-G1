@@ -1,16 +1,11 @@
 package com.uade.tpo.marketplace.entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import com.uade.tpo.marketplace.enums.EstadoEvento;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -20,31 +15,92 @@ public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column
+
     private String nombre;
-
-    @Column
     private String descripcion;
+    private LocalDateTime fechaHora;
 
-    @Column
-    private Date fecha_hora;
+    @Enumerated(EnumType.STRING)
+    private EstadoEvento estado;
 
-    @Column
-    private String estado;
-    
-    @Column
-    private String categoria;
+    private int stockEntradas;
+    private int cantEntradas;
 
-    @Column
-    private int cant_entradas;
+    private String artista;
 
-    @OneToOne(mappedBy = "evento")
-    private Compra compra;
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
 
-    public int getStock() {
-        return cant_entradas;
+    public Long getId() {
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public EstadoEvento getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoEvento estado) {
+        this.estado = estado;
+    }
+
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
+    }
+
+    public void setFechaHora(LocalDateTime fechaHora) {
+        this.fechaHora = fechaHora;
+    }
+
+    public int getStockEntradas() {
+        return stockEntradas;
+    }
+
+    public void setStockEntradas(int stockEntradas) {
+        this.stockEntradas = stockEntradas;
+    }
+
+    public int getCantEntradas() {
+        return cantEntradas;
+    }
+
+    public void setCantEntradas(int cantEntradas) {
+        this.cantEntradas = cantEntradas;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getArtista() {
+        return artista;
+    }
+
+    public void setArtista(String artista) {
+        this.artista = artista;
+    }
 }

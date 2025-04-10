@@ -1,23 +1,27 @@
 package com.uade.tpo.marketplace.service;
 
-import com.uade.tpo.marketplace.controllers.EventoRequest;
 import com.uade.tpo.marketplace.entity.Evento;
-import com.uade.tpo.marketplace.repository.EventoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class EventoService {
+public interface EventoService {
+    Evento crearEvento(Evento evento);
 
-    @Autowired
-    private EventoRepository eventoRepository;
+    List<Evento> obtenerTodos();
 
-    public Evento crearEvento(EventoRequest request) {
-        Evento evento = new Evento();
-        evento.setNombre(request.getNombre());
-        evento.setCategoria(request.getCategoria());
-        evento.setCant_entradas(request.getCant_entradas());
-        return eventoRepository.save(evento);
-    }
+    List<Evento> buscarPorNombre(String nombre);
+
+    List<Evento> buscarPorCategoria(String categoria);
+
+    List<Evento> buscarPorArtista(String artista);
+
+    List<Evento> obtenerDisponibles();
+
+    Evento actualizarEvento(Long id, Evento evento);
+
+    void eliminarEvento(Long id);
 }
 
