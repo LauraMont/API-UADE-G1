@@ -20,31 +20,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-@RestController //anotation que indica que es capa de tráfico HTTP 
-@RequestMapping ("categories") // URIs -> localhost:puerto/endpoint
-public class CategoriesController {
-    @Autowired //con esta anotation se delega a sprint que cuando llegue una request a la capa de tráfico inyecte la dependencia que se necesita
-    private CategoryService categoryService;
+// @RestController //anotation que indica que es capa de tráfico HTTP 
+// @RequestMapping ("categories") // URIs -> localhost:puerto/endpoint
+// public class CategoriesController {
+//     @Autowired //con esta anotation se delega a sprint que cuando llegue una request a la capa de tráfico inyecte la dependencia que se necesita
+//     private CategoryService categoryService;
     
-    @GetMapping // localhost:puerto/categories (GET)
-    public ResponseEntity<List<Categories>> getCategories() {
-        return ResponseEntity.ok(categoryService.getCategories());
-    }
+//     @GetMapping // localhost:puerto/categories (GET)
+//     public ResponseEntity<List<Categories>> getCategories() {
+//         return ResponseEntity.ok(categoryService.getCategories());
+//     }
 
-    @GetMapping("/{categoryId}") // localhost:puerto/categories/1 (GET) es un path variable, va entre llaves
-    public ResponseEntity<Categories> getCategoryById(@PathVariable Long categoryId) {
-        Optional<Categories> result = categoryService.getCategoryById(categoryId);
-        if (result.isPresent())
-            return ResponseEntity.ok(result.get());
+//     @GetMapping("/{categoryId}") // localhost:puerto/categories/1 (GET) es un path variable, va entre llaves
+//     public ResponseEntity<Categories> getCategoryById(@PathVariable Long categoryId) {
+//         Optional<Categories> result = categoryService.getCategoryById(categoryId);
+//         if (result.isPresent())
+//             return ResponseEntity.ok(result.get());
 
-        return ResponseEntity.noContent().build();
-    }
+//         return ResponseEntity.noContent().build();
+//     }
 
-    @PostMapping // localhost:puerto/categories (POST)
-    public ResponseEntity<Object> createCategory(@RequestBody CategoryRequest categoryRequest)
-            throws CategoryDuplicateException {
-        Categories result = categoryService.createCategory(categoryRequest.getDescription());
-        return ResponseEntity.created(URI.create("/categories/" + result.getId())).body(result);
-    }
+//     @PostMapping // localhost:puerto/categories (POST)
+//     public ResponseEntity<Object> createCategory(@RequestBody CategoryRequest categoryRequest)
+//             throws CategoryDuplicateException {
+//         Categories result = categoryService.createCategory(categoryRequest.getDescription());
+//         return ResponseEntity.created(URI.create("/categories/" + result.getId())).body(result);
+//     }
     
-}
+// }
