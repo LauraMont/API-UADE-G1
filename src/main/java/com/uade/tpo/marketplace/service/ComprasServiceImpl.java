@@ -25,10 +25,10 @@ public class ComprasServiceImpl implements ComprasService{
     public Compra createCompra(Long idUsuario, Long idEvento, int cantidad, float total) throws UserNotExistException, EventNotExistException, StockMaxReached {
         Usuario user = (Usuario) this.usuariosRepository.findById(idUsuario).orElseThrow(() -> new UserNotExistException());
         Evento evento = (Evento) this.eventosRepository.findById(idEvento).orElseThrow(() -> new EventNotExistException());
-        if(evento.getStock() - cantidad < 0) {
+        if(evento.getStockEntradas() - cantidad < 0) {
             throw new StockMaxReached();
         }
-        this.eventosRepository.updateStock(idEvento, evento.getStock() - cantidad);
+        this.eventosRepository.updateStock(idEvento, evento.getStockEntradas() - cantidad);
         if(cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor a cero.");
         }

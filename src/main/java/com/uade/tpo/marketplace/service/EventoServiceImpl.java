@@ -67,13 +67,13 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public List<Evento> buscarPorNombre(String nombre) {
-        Long categoriaId = categoriaRepository.findByNombreIgnoreCase(nombre).get().getId();
-        return eventoRepository.findByCategoriaId(categoriaId);
+        return eventoRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
     @Override
     public List<Evento> buscarPorCategoria(String categoria) {
-        return eventoRepository.findByCategoriaNombreContainingIgnoreCase(categoria);
+        Long categoriaId = categoriaRepository.findByNombreIgnoreCase(categoria).get().getId();
+        return eventoRepository.findByCategoriaId(categoriaId);
     }
 
     @Override
