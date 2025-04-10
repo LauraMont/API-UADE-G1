@@ -1,5 +1,7 @@
 package com.uade.tpo.marketplace.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +16,11 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
     private String nombre;
+
+    @Column
     private String descripcion;
 
     public Categoria(String nombre, String descripcion) {
@@ -25,21 +31,18 @@ public class Categoria {
     public Categoria() {
     }
 
-    @Column
     public Long getId() {
         return id;
     }
 
-    @Column
     public String getNombre() {
         return nombre;
     }
 
-    @Column
     public String getDescripcion() {
         return descripcion;
     }
 
     @OneToMany(mappedBy = "categoria")
-    private Evento evento;
+    private List<Evento> evento;
 }
