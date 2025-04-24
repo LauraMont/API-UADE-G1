@@ -43,8 +43,4 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     @Query("SELECT e FROM Evento e WHERE e.stockEntradas > ?1")
     List<Evento> findByStockEntradasGreaterThan(int cantidad);
-
-    Artista findByArtistaId(Long artistaId);
-
-    Locacion findByLocacionId(Long locacionId);
 }

@@ -8,12 +8,15 @@ import com.uade.tpo.marketplace.entity.Locacion;
 import com.uade.tpo.marketplace.enums.EstadoEvento;
 import com.uade.tpo.marketplace.exceptions.EventDuplicateException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
+import com.uade.tpo.marketplace.repository.ArtistaRepository;
 import com.uade.tpo.marketplace.repository.CategoriaRepository;
 import com.uade.tpo.marketplace.repository.EventoRepository;
+import com.uade.tpo.marketplace.repository.LocacionRepository;
 
 import java.sql.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.spi.LocationAwareLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,11 +24,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EventoServiceImpl implements EventoService {
+    @Autowired
+    private ArtistaRepository artistaRepository;
 
+    @Autowired
     private final CategoriaRepository categoriaRepository;
 
     @Autowired
     private EventoRepository eventoRepository;
+
+    @Autowired
+    private LocacionRepository locacionRepository;
 
     EventoServiceImpl(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
@@ -34,8 +43,8 @@ public class EventoServiceImpl implements EventoService {
     public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, Long artistaId, Long locacionId, EstadoEvento estado, Categoria categoria, int cant_entradas) throws EventDuplicateException {
         // Verificar si el evento ya existe
         List<Evento> eventos = eventoRepository.findByNombre(nombre);
-        Artista artista = eventoRepository.findByArtistaId(artistaId);
-        Locacion locacion = eventoRepository.findByLocacionId(locacionId);
+        Artista artista = artistaRepository.findByArtista_Id(artistaId);
+        Locacion locacion = locacionRepository.findBy_Id(locacionId);
         //artista debe existir
         if (artista == null) {
             throw new EventDuplicateException();
@@ -66,13 +75,13 @@ public class EventoServiceImpl implements EventoService {
             throw new EventNotExistException();
         }
         if(artistaId != null) {
-            Artista artista = eventoRepository.findByArtistaId(artistaId);
+            Artista artista = artistaRepository.findByArtista_Id(artistaId);
             if (artista == null) {
                 throw new EventNotExistException();
             }
         }
         if(locacionId != null) {
-            Locacion locacion = eventoRepository.findByLocacionId(locacionId);
+            Locacion locacion = locacionRepository.findBy_Id(locacionId);
             if (locacion == null) {
                 throw new EventNotExistException();
             }
