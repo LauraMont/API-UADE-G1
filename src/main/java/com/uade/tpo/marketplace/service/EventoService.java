@@ -17,9 +17,9 @@ public interface EventoService {
 
     public Page<Evento> getEventos(PageRequest pageRequest);
     public Evento getEventoById(Long eventoId) throws EventNotExistException;
-    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artista, EstadoEvento estado, Categoria categoria, int cant_entradas) throws EventNotExistException;
+    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, Long artistaId,Long locacionId , EstadoEvento estado, Categoria categoria, int cant_entradas) throws EventNotExistException;
     public void deleteEvento(Long eventoId) throws EventNotExistException;
-    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artista, EstadoEvento estado, Categoria categoria, int cant_entradas) throws EventDuplicateException;
+    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, Long artistaId, Long locacionId, EstadoEvento estado, Categoria categoria, int cant_entradas) throws EventDuplicateException;
 
     // Evento crearEvento(Evento evento);
 

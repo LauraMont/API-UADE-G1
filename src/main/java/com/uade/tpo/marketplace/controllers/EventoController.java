@@ -6,8 +6,6 @@ import com.uade.tpo.marketplace.exceptions.EventDuplicateException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
 import com.uade.tpo.marketplace.service.EventoService;
 
-import java.sql.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,7 +50,7 @@ public class EventoController {
 
     @PostMapping // only admin can create events
     public ResponseEntity<Evento> crearEvento( @RequestBody EventoRequest request) throws EventDuplicateException {
-        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
+        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getLocacion(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
         return ResponseEntity.ok(nuevoEvento);
     }
 
@@ -62,7 +60,7 @@ public class EventoController {
     }
     @PutMapping("/{id}") // only admin can edit events
     public ResponseEntity<String> editEvento(@PathVariable Long id, @RequestBody EventoRequest request) throws EventNotExistException {
-        eventoService.editEvento(id, request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
+        eventoService.editEvento(id, request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getArtista(), request.getLocacion(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
         return ResponseEntity.ok("Evento editado correctamente");
     }
     @DeleteMapping("/{id}") // only admin can delete events
