@@ -11,7 +11,7 @@ public class LocacionRequest {
     private String descripcion;
     private String direccion;
     private String capacidad_total;
-    private Categoria categoria;
+    private String categoria;
     private int cantEntradas;
     private int stockEntradas;
 

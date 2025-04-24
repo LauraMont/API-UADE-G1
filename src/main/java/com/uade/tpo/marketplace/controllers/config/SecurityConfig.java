@@ -45,6 +45,8 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.GET,"/categoria").permitAll()
                                                 .requestMatchers("/nombre/{nombre}").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.POST,"/categoria").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.POST,"/artista").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.POST,"/locacion").hasAnyAuthority(Rol.ADMIN.name())
                                                 .anyRequest()
                                                 .authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
