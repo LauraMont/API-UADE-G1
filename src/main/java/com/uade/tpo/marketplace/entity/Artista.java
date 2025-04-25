@@ -30,4 +30,7 @@ public class Artista {
         this.description = description;
         this.genero = genero;
     }
+
+    public Artista() {
+    }
 }

@@ -12,10 +12,10 @@ public class EventoRequest {
     private String nombre;
     private String descripcion;
     private Date fechaHora;
-    private Long artista;
-    private Long locacion;
+    private String artista;
+    private String locacion;
     private EstadoEvento estado;
-    private Categoria categoria;
+    private String categoria;
     private int cantEntradas;
     private int stockEntradas;
 }

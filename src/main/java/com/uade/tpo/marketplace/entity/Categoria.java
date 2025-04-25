@@ -42,7 +42,4 @@ public class Categoria {
     public String getDescripcion() {
         return descripcion;
     }
-
-    @OneToMany(mappedBy = "categoria")
-    private List<Evento> evento;
 }
