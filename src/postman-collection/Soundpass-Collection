@@ -48,7 +48,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/categoria/nombre/Jazz"
+						"url": "{{url}}/categoria/nombre/Jazz"
 					},
 					"response": []
 				},
@@ -60,7 +60,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/categoria"
+						"url": "{{url}}/categoria"
 					},
 					"response": []
 				}
@@ -82,7 +82,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Recital\",\r\n  \"descripcion\": \"Pop en vivo\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"1\",\r\n  \"locacion\": \"1\",\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": \"1\",\r\n  \"stockEntradas\": 10,\r\n  \"cantEntradas\": 0\r\n}",
+							"raw": "{\r\n  \"nombre\": \"Recital 20\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"1\",\r\n  \"locacion\": \"1\",\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": \"1\",\r\n  \"stockEntradas\": 100,\r\n  \"cantEntradas\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -104,7 +104,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/eventos"
+						"url": "{{url}}/eventos"
 					},
 					"response": []
 				},
@@ -114,18 +114,16 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "{{UserToken}}"
+								"token": "{{user_token}}"
 							}
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/eventos/buscar?nombre=Taylie",
-							"protocol": "http",
+							"raw": "{{url}}/eventos/buscar?nombre=Recital 20",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
 								"eventos",
 								"buscar"
@@ -133,7 +131,7 @@
 							"query": [
 								{
 									"key": "nombre",
-									"value": "Taylie"
+									"value": "Recital 20"
 								}
 							]
 						}
@@ -146,12 +144,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/eventos/buscar?artista=Violetta",
-							"protocol": "http",
+							"raw": "{{url}}/eventos/buscar?artista=Artista 1",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
 								"eventos",
 								"buscar"
@@ -159,7 +155,7 @@
 							"query": [
 								{
 									"key": "artista",
-									"value": "Violetta"
+									"value": "Artista 1"
 								}
 							]
 						}
@@ -172,12 +168,12 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "{{UserToken}}"
+								"token": "{{user_token}}"
 							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/eventos/disponibles"
+						"url": "{{url}}/eventos/disponibles"
 					},
 					"response": []
 				},
@@ -187,21 +183,21 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "{{UserToken}}"
+								"token": "{{admin_token}}"
 							}
 						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Concierto Rock Actualizado\",\r\n  \"descripcion\": \"Una noche increíble de rock nacional\",\r\n  \"fechaHora\": \"2025-06-15T21:00:00\",\r\n  \"estado\": \"ACTIVO\",\r\n  \"stockEntradas\": 150,\r\n  \"cantEntradas\": 300,\r\n  \"artista\": \"Los Piojos\",\r\n  \"categoria\": {\r\n    \"id\": 1\r\n  }\r\n}",
+							"raw": "{\r\n  \"nombre\": \"Recital 2\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"1\",\r\n  \"locacion\": \"1\",\r\n  \"estado\": \"FINALIZADO\",\r\n  \"categoria\": \"1\",\r\n  \"stockEntradas\": 100,\r\n  \"cantEntradas\": 50\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:8080/eventos/1"
+						"url": "{{url}}/eventos/1"
 					},
 					"response": []
 				},
@@ -211,12 +207,12 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbmlzdHJhZG9yQHNvdW5kcGFzcy5jb20iLCJpYXQiOjE3NDQzMTg4MTksImV4cCI6MTc0NDQwNTIxOX0.BlNZfvpiNl8rseLOkkqhAIL45FAWYnV6OmuipsG2rwU"
+								"token": "{{admin_token}}"
 							}
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:8080/eventos/1"
+						"url": "{{url}}/eventos/1"
 					},
 					"response": []
 				}
@@ -354,7 +350,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "{{UserToken}}"
+								"token": "{{user_token}}"
 							}
 						},
 						"method": "POST",

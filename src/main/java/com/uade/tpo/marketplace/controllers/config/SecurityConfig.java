@@ -43,6 +43,7 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.PUT, "/eventos/{id}").hasAnyAuthority(Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.DELETE, "/eventos/{id}").hasAnyAuthority(Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.GET,"/categoria").permitAll()
+                                                .requestMatchers(HttpMethod.GET,"/categoria/nombre/{nombre}").permitAll()
                                                 .requestMatchers("/nombre/{nombre}").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.POST,"/categoria").hasAnyAuthority(Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.POST,"/artista").hasAnyAuthority(Rol.ADMIN.name())

@@ -13,5 +13,5 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     Optional<Categoria> findByNombreIgnoreCase(String nombre);
 
     @Query(value = "SELECT c FROM Categoria c WHERE c.id = ?1")
-    Categoria findBy_Id(String categoriaId);
+    Categoria findBy_Id(Long long1);
 }

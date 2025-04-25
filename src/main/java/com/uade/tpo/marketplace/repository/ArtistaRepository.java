@@ -9,5 +9,5 @@ import com.uade.tpo.marketplace.entity.Artista;
 @Repository
 public interface ArtistaRepository extends JpaRepository<Artista, Long> {
     @Query("SELECT e FROM Artista e WHERE e.id = ?1")
-    Artista findByArtista_Id(String artistaId);
+    Artista findByArtista_Id(Long artistaId);
 }
