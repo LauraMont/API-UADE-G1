@@ -22,9 +22,9 @@ public class Locacion {
     private String direccion;
 
     @Column
-    private String capacidad_total;
+    private int capacidad_total;
 
-    public Locacion(String nombre, String direccion, String capacidad_total) {
+    public Locacion(String nombre, String direccion, int capacidad_total) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.capacidad_total = capacidad_total;

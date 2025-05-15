@@ -11,7 +11,7 @@ public class LocacionServiceImpl implements LocacionService {
     @Autowired
     private LocacionRepository locacionRepository;
 
-    public Locacion createLocacion(String nombre, String descripcion, String direccion) {
-        return locacionRepository.save(new Locacion(nombre, descripcion, direccion));
+    public Locacion createLocacion(String nombre,String direccion, int capacidad_total) {
+        return locacionRepository.save(new Locacion(nombre, direccion, capacidad_total));
     }
 }

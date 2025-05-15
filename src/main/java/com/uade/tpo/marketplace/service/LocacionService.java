@@ -7,5 +7,5 @@ import com.uade.tpo.marketplace.exceptions.CategoryDuplicateException;
 
 @Service
 public interface LocacionService {
-    public Locacion createLocacion(String nombre, String direccion, String capacidad_total) throws CategoryDuplicateException;
+    public Locacion createLocacion(String nombre, String direccion, int capacidad_total) throws CategoryDuplicateException;
 }

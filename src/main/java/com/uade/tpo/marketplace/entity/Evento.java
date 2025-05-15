@@ -30,7 +30,6 @@ public class Evento {
         this.locacion = locacion;
         this.estado = estado;
         this.categoria = categoria;
-        this.cantEntradas = cant_entradas;
         this.stockEntradas = cant_entradas;
     }
 
@@ -58,14 +57,8 @@ public class Evento {
     @Column
     private int stockEntradas;
     
-    @Column
-    private int cantEntradas; // total entradas disponibles
-    
     @Enumerated(EnumType.STRING)
     private EstadoEvento estado;
-
-    @OneToMany(mappedBy = "evento")
-    private List<Compra> compra;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")

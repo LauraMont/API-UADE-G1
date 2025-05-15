@@ -20,12 +20,12 @@ import com.uade.tpo.marketplace.enums.EstadoEvento;
 public interface EventoRepository extends JpaRepository<Evento, Long> {
    @Modifying
    @Transactional
-   @Query("UPDATE Evento e SET e.cantEntradas = ?2 WHERE e.id = ?1")
+   @Query("UPDATE Evento e SET e.stockEntradas = ?2 WHERE e.id = ?1")
    void updateStock(Long eventoId, int stockEntradas); 
 
     @Modifying
     @Transactional
-    @Query("UPDATE Evento e SET e.nombre = ?2, e.descripcion = ?3, e.fechaHora = ?4, e.artista = ?5,e.locacion=?6  ,e.estado = ?7, e.categoria = ?8, e.cantEntradas = ?9 WHERE e.id = ?1")
+    @Query("UPDATE Evento e SET e.nombre = ?2, e.descripcion = ?3, e.fechaHora = ?4, e.artista = ?5,e.locacion=?6  ,e.estado = ?7, e.categoria = ?8, e.stockEntradas = ?9 WHERE e.id = ?1")
     void updateEvento(Long eventoId, String nombre, String descripcion, Date fechaHora, Artista artista, Locacion locacion, EstadoEvento estado, Categoria categoria, int cantEntradas);
 
 

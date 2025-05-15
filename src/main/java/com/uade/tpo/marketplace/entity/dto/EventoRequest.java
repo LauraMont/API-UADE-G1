@@ -16,7 +16,6 @@ public class EventoRequest {
     private String locacion;
     private EstadoEvento estado;
     private String categoria;
-    private int cantEntradas;
     private int stockEntradas;
 }
 

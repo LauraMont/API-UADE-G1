@@ -42,7 +42,7 @@ public class EventoServiceImpl implements EventoService {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int cant_entradas) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
+    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
         // Verificar si el evento ya existe
         Long artistaIdLong = Long.parseLong(artistaId);
         List<Evento> eventos = eventoRepository.findByNombre(nombre);
@@ -57,7 +57,7 @@ public class EventoServiceImpl implements EventoService {
             throw new LocacionNotExistException();
         }
         if (eventos.isEmpty()) {
-            return eventoRepository.save(new Evento(nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, cant_entradas));
+            return eventoRepository.save(new Evento(nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, locacion.getCapacidad_total()));
         }
         throw new EventDuplicateException();
 

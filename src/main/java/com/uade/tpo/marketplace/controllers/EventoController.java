@@ -52,7 +52,7 @@ public class EventoController {
 
     @PostMapping // only admin can create events
     public ResponseEntity<Evento> crearEvento( @RequestBody EventoRequest request) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
-        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getLocacion(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
+        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getLocacion(), request.getArtista(), request.getEstado(), request.getCategoria());
         return ResponseEntity.ok(nuevoEvento);
     }
 
@@ -62,7 +62,7 @@ public class EventoController {
     }
     @PutMapping("/{id}") // only admin can edit events
     public ResponseEntity<String> editEvento(@PathVariable Long id, @RequestBody EventoRequest request) throws EventNotExistException {
-        eventoService.editEvento(id, request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getLocacion(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getCantEntradas());
+        eventoService.editEvento(id, request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getLocacion(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getStockEntradas());
         return ResponseEntity.ok("Evento editado correctamente");
     }
     @DeleteMapping("/{id}") // only admin can delete events
