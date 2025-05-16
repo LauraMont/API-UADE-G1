@@ -1,17 +1,24 @@
 package com.uade.tpo.marketplace.service;
 
+import com.uade.tpo.marketplace.entity.Artista;
 import com.uade.tpo.marketplace.entity.Categoria;
 // import com.uade.tpo.marketplace.controllers.EventoRequest;
 import com.uade.tpo.marketplace.entity.Evento;
+import com.uade.tpo.marketplace.entity.Locacion;
 import com.uade.tpo.marketplace.enums.EstadoEvento;
+import com.uade.tpo.marketplace.exceptions.ArtistaNotExistException;
 import com.uade.tpo.marketplace.exceptions.EventDuplicateException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
+import com.uade.tpo.marketplace.exceptions.LocacionNotExistException;
+import com.uade.tpo.marketplace.repository.ArtistaRepository;
 import com.uade.tpo.marketplace.repository.CategoriaRepository;
 import com.uade.tpo.marketplace.repository.EventoRepository;
+import com.uade.tpo.marketplace.repository.LocacionRepository;
 
 import java.sql.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.spi.LocationAwareLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,21 +26,38 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EventoServiceImpl implements EventoService {
+    @Autowired
+    private ArtistaRepository artistaRepository;
 
+    @Autowired
     private final CategoriaRepository categoriaRepository;
 
     @Autowired
     private EventoRepository eventoRepository;
 
+    @Autowired
+    private LocacionRepository locacionRepository;
+
     EventoServiceImpl(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artista, EstadoEvento estado, Categoria categoria, int cant_entradas) throws EventDuplicateException {
+    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
         // Verificar si el evento ya existe
+        Long artistaIdLong = Long.parseLong(artistaId);
         List<Evento> eventos = eventoRepository.findByNombre(nombre);
+        Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
+        Locacion locacion = locacionRepository.findBy_Id(Long.parseLong(locacionId));
+        Categoria categoria = categoriaRepository.findBy_Id(Long.parseLong(categoriaId));
+        //artista debe existir
+        if (artista == null) {
+            throw new ArtistaNotExistException();
+        }
+        if(locacion == null) {
+            throw new LocacionNotExistException();
+        }
         if (eventos.isEmpty()) {
-            return eventoRepository.save(new Evento(nombre, descripcion, fecha_hora, artista, estado, categoria, cant_entradas));
+            return eventoRepository.save(new Evento(nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, locacion.getCapacidad_total()));
         }
         throw new EventDuplicateException();
 
@@ -50,11 +74,21 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artista, EstadoEvento estado, Categoria categoria, int cant_entradas) throws EventNotExistException {
+    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId ,EstadoEvento estado, String categoriaId, int cant_entradas) throws EventNotExistException {
+        Long artistaIdLong = Long.parseLong(artistaId);
+        Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
+        Locacion locacion = locacionRepository.findBy_Id(Long.parseLong(locacionId));
+        Categoria categoria = categoriaRepository.findBy_Id(Long.parseLong(categoriaId));
         if (!eventoRepository.existsById(eventoId)) {
             throw new EventNotExistException();
         }
-        eventoRepository.updateEvento(eventoId, nombre, descripcion, fecha_hora, artista, estado, categoria, cant_entradas);
+        if(artista== null) {
+            throw new EventNotExistException();
+        }
+        if(locacion== null) {
+            throw new EventNotExistException();
+        }
+        eventoRepository.updateEvento(eventoId, nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, cant_entradas);
     }
 
     @Override

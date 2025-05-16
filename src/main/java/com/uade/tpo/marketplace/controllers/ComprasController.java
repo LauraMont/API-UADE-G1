@@ -3,6 +3,7 @@ package com.uade.tpo.marketplace.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.Compra;
+import com.uade.tpo.marketplace.entity.dto.CompraRequest;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
 import com.uade.tpo.marketplace.exceptions.StockMaxReached;
 import com.uade.tpo.marketplace.exceptions.UserNotExistException;

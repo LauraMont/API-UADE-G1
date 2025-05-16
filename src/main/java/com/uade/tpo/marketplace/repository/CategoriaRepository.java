@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     @Query(value = "SELECT c FROM Categoria c WHERE LOWER(c.nombre) = LOWER(?1)") 
     Optional<Categoria> findByNombreIgnoreCase(String nombre);
+
+    @Query(value = "SELECT c FROM Categoria c WHERE c.id = ?1")
+    Categoria findBy_Id(Long long1);
 }

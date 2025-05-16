@@ -13,9 +13,9 @@ public class EventoRequest {
     private String descripcion;
     private Date fechaHora;
     private String artista;
+    private String locacion;
     private EstadoEvento estado;
-    private Categoria categoria;
-    private int cantEntradas;
+    private String categoria;
     private int stockEntradas;
 }
 
