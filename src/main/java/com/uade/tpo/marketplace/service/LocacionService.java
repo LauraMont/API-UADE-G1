@@ -1,11 +1,15 @@
 package com.uade.tpo.marketplace.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.marketplace.entity.Locacion;
+import com.uade.tpo.marketplace.entity.dto.LocacionRequest;
+import com.uade.tpo.marketplace.entity.dto.ZonaRequest;
 import com.uade.tpo.marketplace.exceptions.CategoryDuplicateException;
 
 @Service
 public interface LocacionService {
-    public Locacion createLocacion(String nombre, String direccion, int capacidad_total) throws CategoryDuplicateException;
+    public LocacionRequest createLocacion(String nombre, String direccion, int capacidad_total, List<ZonaRequest> zonas) throws CategoryDuplicateException;
 }

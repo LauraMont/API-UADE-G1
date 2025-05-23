@@ -1,20 +1,19 @@
 package com.uade.tpo.marketplace.entity.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
 public class CompraRequest {
     private Long usuarioId;
     private Long eventoId;
-    private int cantidad;
-    private float total;
+    private List<String> butacas;
 
     CompraRequest() {
     }
-    public CompraRequest(Long usuarioId, Long eventoId, int cantidad, float total) {
+    public CompraRequest(Long usuarioId, Long eventoId) {
         this.usuarioId = usuarioId;
         this.eventoId = eventoId;
-        this.cantidad = cantidad;
-        this.total = total;
     }   
 }
