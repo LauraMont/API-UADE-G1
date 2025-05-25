@@ -120,4 +120,53 @@ public class EventoServiceImpl implements EventoService {
         return eventoRepository.findByStockEntradasGreaterThan(0);
     }
 
+    @Override
+    public List<Evento> buscarPorFechaHora(Date fechaInicio, Date fechaFin) {
+        return eventoRepository.findByFechaHoraBetween(fechaInicio, fechaFin);
+    }
+
+    @Override
+    public List<Evento> buscarPorEstado(EstadoEvento estado) {
+        return eventoRepository.findByEstado(estado);
+    }
+
+    @Override
+    public List<Evento> buscarPorLocacion(String locacionId) {
+        Locacion locacion = locacionRepository.findBy_Id(Long.parseLong(locacionId));
+        if (locacion == null) {
+            return List.of();
+        }
+        return eventoRepository.findByLocacion(locacion);
+    }
+
+    @Override
+    public List<Evento> buscarPorFiltros(
+        String nombre,
+        String categoriaId,
+        String artistaId,
+        EstadoEvento estado,
+        Date fechaInicio,
+        Date fechaFin,
+        Integer stockMin
+    ) {
+        Categoria categoria = null;
+        if (categoriaId != null) {
+            categoria = categoriaRepository.findBy_Id(Long.parseLong(categoriaId));
+        }
+
+        Artista artista = null;
+        if (artistaId != null) {
+            artista = artistaRepository.findByArtista_Id(Long.parseLong(artistaId));
+        }
+
+        return eventoRepository.findEventosByFiltros(
+            nombre,
+            categoria,
+            artista,
+            estado,
+            fechaInicio,
+            fechaFin,
+            stockMin
+        );
+    }
 }

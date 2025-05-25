@@ -33,6 +33,22 @@ public interface EventoService {
 
     public List<Evento> obtenerDisponibles();
 
+    public List<Evento> buscarPorFechaHora(Date fechaInicio, Date fechaFin);
+
+    public List<Evento> buscarPorEstado(EstadoEvento estado);
+
+    public List<Evento> buscarPorLocacion(String locacionId);
+
+    public List<Evento> buscarPorFiltros(
+        String nombre,
+        String categoriaId,
+        String artistaId,
+        EstadoEvento estado,
+        Date fechaInicio,
+        Date fechaFin,
+        Integer stockMin
+    );
+
     // Evento actualizarEvento(Long id, Evento evento);
 
     // void eliminarEvento(Long id);
