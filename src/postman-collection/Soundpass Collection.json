@@ -82,7 +82,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Recital 2025 - parte 1\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"1\",\r\n  \"locacion\": \"1\",\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": \"1\"\r\n}",
+							"raw": "{\r\n  \"nombre\": \"Recital 2025 - parte 3\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"1\",\r\n  \"locacion\": \"1\",\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": \"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -212,7 +212,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "{{url}}/eventos/1"
+						"url": "{{url}}/eventos/"
 					},
 					"response": []
 				}
@@ -304,47 +304,6 @@
 					"response": []
 				},
 				{
-					"name": "POST Auth User",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Extrae el token del JSON de la respuesta\r",
-									"let json = pm.response.json();\r",
-									"let token = json.access_token;\r",
-									"\r",
-									"if (token) {\r",
-									"    // Lo guarda como variable de entorno\r",
-									"    pm.environment.set(\"user_token\", token);\r",
-									"    console.log(\"✅ Token guardado en variable de entorno.\");\r",
-									"} else {\r",
-									"    console.warn(\"⚠️ No se encontró el token en la respuesta.\");\r",
-									"}\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"user@soundpass.com\",\r\n  \"password\": \"user123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{url}}/api/v1/auth/authenticate"
-					},
-					"response": []
-				},
-				{
 					"name": "POST Crear User",
 					"event": [
 						{
@@ -384,6 +343,47 @@
 						"url": "{{url}}/api/v1/auth/register"
 					},
 					"response": []
+				},
+				{
+					"name": "POST Auth User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el token del JSON de la respuesta\r",
+									"let json = pm.response.json();\r",
+									"let token = json.access_token;\r",
+									"\r",
+									"if (token) {\r",
+									"    // Lo guarda como variable de entorno\r",
+									"    pm.environment.set(\"user_token\", token);\r",
+									"    console.log(\"✅ Token guardado en variable de entorno.\");\r",
+									"} else {\r",
+									"    console.warn(\"⚠️ No se encontró el token en la respuesta.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"user@soundpass.com\",\r\n  \"password\": \"user123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/v1/auth/authenticate"
+					},
+					"response": []
 				}
 			]
 		},
@@ -403,7 +403,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"usuarioId\": 1,\r\n  \"eventoId\": 1,\r\n  \"cantidad\": 1000,\r\n  \"total\": 2000.00\r\n}",
+							"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"eventoId\": 1,\r\n    \"butacas\":[\"B3\",\"B4\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -432,7 +432,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Estadio 1\",\r\n    \"descripcion\": \"\",\r\n    \"direccion\": \"Calle Falsa 123\",\r\n    \"capacidad_total\": 100,\r\n    \"categoriaId\": \"1\"\r\n}",
+							"raw": "{\r\n    \"nombre\": \"Estadio 1\",\r\n    \"descripcion\": \"\",\r\n    \"direccion\": \"Calle Falsa 12765\",\r\n    \"categoriaId\": \"1\",\r\n    \"zonas\":[\r\n        {\r\n            \"precio_base\": 10.2,\r\n            \"cantidad_butacas\": 5    \r\n        },\r\n        {\r\n            \"precio_base\": 20.34,\r\n            \"cantidad_butacas\": 10    \r\n        }\r\n\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
