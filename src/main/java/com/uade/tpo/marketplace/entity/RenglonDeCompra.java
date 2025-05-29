@@ -23,7 +23,7 @@ public class RenglonDeCompra {
     private Butaca butaca;
 
     @ManyToOne
-    @JoinColumn(name = "compra_id", nullable = false)
+    @JoinColumn(name = "compra_id", referencedColumnName = "id", nullable = false)
     private Compra compra;
 
     @OneToOne(mappedBy = "renglondecompra")

@@ -22,6 +22,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Locación no encontrada: " + ex.getMessage());
     }
 
+        @ExceptionHandler(LocacionDuplicadaException.class)
+    public ResponseEntity<String> handleLocacionNotExist(LocacionDuplicadaException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Locación ya existe: " + ex.getMessage());
+    }
+
     @ExceptionHandler(EventNotExistException.class)
     public ResponseEntity<String> handleEventNotExist(EventNotExistException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Evento no encontrado: " + ex.getMessage());
@@ -40,6 +45,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ArtistaNotExistException.class)
     public ResponseEntity<String> handleArtistaNotExist(ArtistaNotExistException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Artista no encontrado: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(ButacaNoExisteException.class)
+    public ResponseEntity<String> handleArtistaNotExist(ButacaNoExisteException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Butaca no encontrada: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(ButacaVendidaException.class)
+    public ResponseEntity<String> handleArtistaNotExist(ButacaVendidaException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Butaca ya fue vendida: " + ex.getMessage());
     }
 
     // Catch-all para errores no controlados

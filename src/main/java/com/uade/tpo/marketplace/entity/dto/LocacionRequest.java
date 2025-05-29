@@ -14,7 +14,7 @@ public class LocacionRequest {
     public LocacionRequest(String nombre, String direccion, int capacidad_total) {
         this.nombre = nombre;
         this.direccion = direccion;
-        this.capacidad_total = capacidad_total;
+        this.capacidad_total = 0;
     }
 }
 

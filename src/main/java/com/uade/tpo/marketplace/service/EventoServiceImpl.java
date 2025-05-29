@@ -54,13 +54,11 @@ public class EventoServiceImpl implements EventoService {
     }
 
     public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
-        // Verificar si el evento ya existe
         Long artistaIdLong = Long.parseLong(artistaId);
         List<Evento> eventos = eventoRepository.findByNombre(nombre);
         Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
         Locacion locacion = locacionRepository.findBy_Id(Long.parseLong(locacionId));
         Categoria categoria = categoriaRepository.findBy_Id(Long.parseLong(categoriaId));
-        //artista debe existir
         if (artista == null) {
             throw new ArtistaNotExistException();
         }

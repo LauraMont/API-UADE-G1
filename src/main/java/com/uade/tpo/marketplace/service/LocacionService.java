@@ -8,8 +8,9 @@ import com.uade.tpo.marketplace.entity.Locacion;
 import com.uade.tpo.marketplace.entity.dto.LocacionRequest;
 import com.uade.tpo.marketplace.entity.dto.ZonaRequest;
 import com.uade.tpo.marketplace.exceptions.CategoryDuplicateException;
+import com.uade.tpo.marketplace.exceptions.LocacionDuplicadaException;
 
 @Service
 public interface LocacionService {
-    public LocacionRequest createLocacion(String nombre, String direccion, int capacidad_total, List<ZonaRequest> zonas) throws CategoryDuplicateException;
+    public LocacionRequest createLocacion(String nombre, String direccion, List<ZonaRequest> zonas) throws CategoryDuplicateException, LocacionDuplicadaException;
 }

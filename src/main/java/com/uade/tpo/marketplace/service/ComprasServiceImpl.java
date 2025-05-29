@@ -11,7 +11,10 @@ import com.uade.tpo.marketplace.entity.Entrada;
 import com.uade.tpo.marketplace.entity.Evento;
 import com.uade.tpo.marketplace.entity.RenglonDeCompra;
 import com.uade.tpo.marketplace.entity.Usuario;
+import com.uade.tpo.marketplace.entity.dto.ZonaRequest;
 import com.uade.tpo.marketplace.enums.EstadoButaca;
+import com.uade.tpo.marketplace.exceptions.ButacaNoExisteException;
+import com.uade.tpo.marketplace.exceptions.ButacaVendidaException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
 import com.uade.tpo.marketplace.exceptions.StockMaxReached;
 import com.uade.tpo.marketplace.exceptions.UserNotExistException;
@@ -37,25 +40,34 @@ public class ComprasServiceImpl implements ComprasService{
     @Autowired
     private RenglonCompraRepository renglonCompraRepositor;
 
-    public Compra createCompra(Long idUsuario, Long idEvento, List<String> butacas) throws UserNotExistException, EventNotExistException, StockMaxReached {
+    public Compra createCompra(Long idUsuario, Long idEvento, List<String> butacas) throws UserNotExistException, EventNotExistException, StockMaxReached, ButacaNoExisteException, ButacaVendidaException {
         Usuario user = (Usuario) this.usuariosRepository.findById(idUsuario).orElseThrow(() -> new UserNotExistException());
         Evento evento = (Evento) this.eventosRepository.findById(idEvento).orElseThrow(() -> new EventNotExistException());
         if(evento.getStockEntradas() - butacas.size() <= 0) {
             throw new StockMaxReached();
         }
-        this.eventosRepository.updateStock(idEvento, evento.getStockEntradas() - butacas.size());
        Compra compra = this.comprasRepository.save(new Compra(user, evento,0));
        float totalCompra = 0;
         for(String butaca : butacas) {
-            Butaca butacaExistente = this.butacaRepository.findByName(butaca);
-            renglonCompraRepositor.save(new RenglonDeCompra(compra, butacaExistente));
-            if(butacaExistente.getEstado() == EstadoButaca.VENDIDA) {
-                throw new StockMaxReached();
+            Butaca butacaExistente = (Butaca) this.butacaRepository.findByName(butaca);
+            if(butacaExistente == null) {
+                throw new ButacaNoExisteException();
             }
-            this.entradasRepository.save(new Entrada(butacaExistente));
+            if(butacaExistente.getEstado() == EstadoButaca.VENDIDA) {
+                throw new ButacaVendidaException();
+            }
+            butacaExistente.setEstado(EstadoButaca.VENDIDA);
+            butacaRepository.save(butacaExistente);
+            RenglonDeCompra renglon = renglonCompraRepositor.save(new RenglonDeCompra(compra, butacaExistente));
+            Entrada entrada = new Entrada(butacaExistente);
+            entrada.setRenglondecompra(renglon);  // ← setear la relación correctamente
+            this.entradasRepository.save(entrada);
+
             totalCompra += butacaExistente.getZona().getPrecio_base();
         }
+
         compra.setTotal(totalCompra);
+        this.eventosRepository.updateStock(idEvento, evento.getStockEntradas() - butacas.size());
         return compra;
     }
 }

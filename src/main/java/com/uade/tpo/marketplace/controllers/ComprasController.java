@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.Compra;
 import com.uade.tpo.marketplace.entity.dto.CompraRequest;
+import com.uade.tpo.marketplace.exceptions.ButacaNoExisteException;
+import com.uade.tpo.marketplace.exceptions.ButacaVendidaException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
 import com.uade.tpo.marketplace.exceptions.StockMaxReached;
 import com.uade.tpo.marketplace.exceptions.UserNotExistException;
@@ -26,7 +28,7 @@ public class ComprasController {
     private ComprasService comprasService;
 
     @PostMapping
-    public ResponseEntity<Object> createCompra(@RequestBody CompraRequest compra) throws UserNotExistException, EventNotExistException, StockMaxReached {
+    public ResponseEntity<Object> createCompra(@RequestBody CompraRequest compra) throws UserNotExistException, EventNotExistException, StockMaxReached, ButacaNoExisteException, ButacaVendidaException {
         List<String> butacas = compra.getButacas();
         Long idUsuario = compra.getUsuarioId();
         Long idProducto = compra.getEventoId();
