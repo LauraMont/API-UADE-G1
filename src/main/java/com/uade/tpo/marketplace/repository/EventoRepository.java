@@ -46,4 +46,7 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     @Query("SELECT e FROM Evento e WHERE e.artista = ?1")
     List<Evento> findByArtista_Id(String artista);
+
+    @Query("SELECT e FROM Evento e WHERE e.id = ?1")
+    Evento findBy_Id(Long id);
 }
