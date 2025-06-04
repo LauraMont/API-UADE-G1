@@ -1,5 +1,6 @@
 package com.uade.tpo.marketplace.entity.dto;
 import java.sql.Date;
+import java.util.List;
 
 import com.uade.tpo.marketplace.entity.Categoria;
 import com.uade.tpo.marketplace.enums.EstadoEvento;
@@ -17,5 +18,6 @@ public class EventoRequest {
     private EstadoEvento estado;
     private String categoria;
     private int stockEntradas;
+
 }
 

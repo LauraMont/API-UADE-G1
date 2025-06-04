@@ -4,12 +4,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.Compra;
 import com.uade.tpo.marketplace.entity.dto.CompraRequest;
+import com.uade.tpo.marketplace.exceptions.ButacaNoExisteException;
+import com.uade.tpo.marketplace.exceptions.ButacaVendidaException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
 import com.uade.tpo.marketplace.exceptions.StockMaxReached;
 import com.uade.tpo.marketplace.exceptions.UserNotExistException;
 import com.uade.tpo.marketplace.service.ComprasService;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +28,12 @@ public class ComprasController {
     private ComprasService comprasService;
 
     @PostMapping
-    public ResponseEntity<Object> createCompra(@RequestBody CompraRequest compra) throws UserNotExistException, EventNotExistException, StockMaxReached {
-        int cantidadInt = compra.getCantidad();
-        Float totalFloat =compra.getTotal();
+    public ResponseEntity<Object> createCompra(@RequestBody CompraRequest compra) throws UserNotExistException, EventNotExistException, StockMaxReached, ButacaNoExisteException, ButacaVendidaException {
+        List<String> butacas = compra.getButacas();
         Long idUsuario = compra.getUsuarioId();
         Long idProducto = compra.getEventoId();
-        Compra result = comprasService.createCompra(idUsuario, idProducto, cantidadInt, totalFloat);
-        CompraRequest response = new CompraRequest(result.getIdUsuario(), result.getIdProducto(), result.getCantidad(), result.getTotal());
+        Compra result = comprasService.createCompra(idUsuario, idProducto, butacas);
+        CompraRequest response = new CompraRequest(result.getIdUsuario(), result.getIdProducto());
         return ResponseEntity.created(URI.create("/compras/" + result.getIdCompra())).body(response);
     }
 }

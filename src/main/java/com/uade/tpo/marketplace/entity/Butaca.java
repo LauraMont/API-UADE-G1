@@ -1,9 +1,10 @@
 package com.uade.tpo.marketplace.entity;
 
-import java.util.List;
+import com.uade.tpo.marketplace.enums.EstadoButaca;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,18 +19,23 @@ public class Butaca {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column
-    private String fila;
 
     @Column
-    private int numero;
+    private String numero;
 
     @Column
-    private String estado;
+    private EstadoButaca estado;
 
     @ManyToOne
-    @JoinColumn(name = "zona_id", nullable = false)
+    @JoinColumn(name = "zona_id")
     private Zona zona;
+
+    Butaca() {
+    }
+    public Butaca(String numero, Zona zona) {
+        this.numero = numero;
+        this.estado = EstadoButaca.DISPONIBLE;
+        this.zona = zona;
+    }
     
 }

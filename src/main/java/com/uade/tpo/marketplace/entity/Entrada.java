@@ -1,5 +1,7 @@
 package com.uade.tpo.marketplace.entity;
 
+import com.uade.tpo.marketplace.enums.EstadoButaca;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,24 +20,19 @@ public class Entrada {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String estado;
-
     @OneToOne
-    @JoinColumn(name = "renglondecompra_id", referencedColumnName = "id")
+    @JoinColumn(name = "renglondecompra_id", referencedColumnName = "id", nullable = false)
     private RenglonDeCompra renglondecompra;
-
-    @OneToOne
-    @JoinColumn(name = "zona_id", referencedColumnName = "id")
-    private Zona zona;
 
     @OneToOne
     @JoinColumn(name = "butaca_id", referencedColumnName = "id")
     private Butaca butaca;
 
-    @ManyToOne
-    @JoinColumn(name = "evento_id", nullable = false)
-    private Evento evento;
+    Entrada() {
+    }
+    public Entrada(Butaca butaca) {
+        this.renglondecompra = null;
+        this.butaca = butaca;
+    }
 
-    
 }

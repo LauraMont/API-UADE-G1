@@ -32,13 +32,54 @@ Permitir a los usuarios:
 
 ---
 
-## 📦 Endpoints principales (ejemplos)
+## 📚 Endpoints
 
-| Método | Endpoint              | Descripción                         |
-|--------|-----------------------|-------------------------------------|
-| GET    | `/eventos`            | Listar todos los eventos            |
-| POST   | `/usuarios`           | Registrar nuevo usuario             |
-| POST   | `/compras`            | Crear nueva compra                  |
+### 👤 Autenticación de Usuarios
+
+| Método | Endpoint                         | Descripción                          |
+|--------|----------------------------------|--------------------------------------|
+| POST   | `/api/v1/auth/register`          | Registro de nuevo usuario/admin      |
+| POST   | `/api/v1/auth/authenticate`      | Autenticación y obtención de token   |
+
+---
+
+### 🧑‍💼 Usuarios
+
+| Método | Endpoint      | Descripción                | Autenticación |
+|--------|---------------|----------------------------|----------------|
+| POST   | `/usuarios`   | Crear nuevo usuario        | ❌             |
+
+---
+
+### 🏷️ Categorías
+
+| Método | Endpoint                         | Descripción                         | Autenticación |
+|--------|----------------------------------|-------------------------------------|---------------|
+| POST   | `/categoria`                     | Crear nueva categoría               | ✅ `admin_token` |
+| GET    | `/categoria`                     | Listar todas las categorías         | ❌             |
+| GET    | `/categoria/nombre/:nombre`      | Buscar categoría por nombre         | ❌             |
+
+---
+
+### 🎫 Eventos
+
+| Método | Endpoint                          | Descripción                               | Autenticación     |
+|--------|-----------------------------------|-------------------------------------------|-------------------|
+| POST   | `/eventos`                        | Crear nuevo evento                        | ✅ `admin_token`  |
+| GET    | `/eventos`                        | Listar todos los eventos                  | ✅ `user_token`   |
+| GET    | `/eventos/buscar?nombre=Recital`  | Buscar eventos por nombre                 | ✅ `user_token`   |
+| GET    | `/eventos/buscar?artista=Artista` | Buscar eventos por artista                | ✅ `user_token`   |
+| GET    | `/eventos/disponibles`            | Obtener eventos disponibles               | ✅ `user_token`   |
+| PUT    | `/eventos/:id`                    | Editar un evento existente                | ✅ `admin_token`  |
+| DELETE | `/eventos/:id`                    | Eliminar evento                           | ✅ `admin_token`  |
+
+---
+
+### 🛒 Compras
+
+| Método | Endpoint     | Descripción         | Autenticación |
+|--------|--------------|---------------------|---------------|
+| POST   | `/compras`   | Registrar una compra| ✅ `user_token` |
 
 ---
 
