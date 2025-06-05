@@ -8,12 +8,13 @@ import lombok.Data;
 public class CompraRequest {
     private Long usuarioId;
     private Long eventoId;
-    private List<String> butacas;
+    private List<Long> butacas;
 
     CompraRequest() {
     }
-    public CompraRequest(Long usuarioId, Long eventoId) {
+    public CompraRequest(Long usuarioId, Long eventoId, List<Long> butaca) {
         this.usuarioId = usuarioId;
         this.eventoId = eventoId;
+        this.butacas = butaca;
     }   
 }

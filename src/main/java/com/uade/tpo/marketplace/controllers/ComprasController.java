@@ -29,11 +29,11 @@ public class ComprasController {
 
     @PostMapping
     public ResponseEntity<Object> createCompra(@RequestBody CompraRequest compra) throws UserNotExistException, EventNotExistException, StockMaxReached, ButacaNoExisteException, ButacaVendidaException {
-        List<String> butacas = compra.getButacas();
+        List<Long> butacas = compra.getButacas();
         Long idUsuario = compra.getUsuarioId();
         Long idProducto = compra.getEventoId();
         Compra result = comprasService.createCompra(idUsuario, idProducto, butacas);
-        CompraRequest response = new CompraRequest(result.getIdUsuario(), result.getIdProducto());
+        CompraRequest response = new CompraRequest(result.getIdUsuario(), result.getIdProducto(), butacas);
         return ResponseEntity.created(URI.create("/compras/" + result.getIdCompra())).body(response);
     }
 }
