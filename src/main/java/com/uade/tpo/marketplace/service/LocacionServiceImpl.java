@@ -44,4 +44,11 @@ public class LocacionServiceImpl implements LocacionService {
         
         return new LocacionRequest(nombre, direccion, totalButacas);
     }
+
+    @Override
+    public LocacionRequest getLocacionById(Long locacionId) {
+        return locacionRepository.findById(locacionId)
+                .map(locacion -> new LocacionRequest(locacion.getNombre(), locacion.getDireccion(), locacion.getCapacidad_total()))
+                .orElse(null);
+    }
 }

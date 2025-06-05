@@ -12,10 +12,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.uade.tpo.marketplace.entity.Rol;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +34,14 @@ public class SecurityConfig {
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { //configuro seguridad http
                 http
+                        .cors(cors -> cors.configurationSource(request -> {
+                        CorsConfiguration config = new CorsConfiguration();
+                        config.setAllowedOrigins(List.of("http://localhost:5173"));
+                        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                        config.setAllowedHeaders(List.of("*"));
+                        config.setAllowCredentials(true);
+                        return config;
+                        }))
                                 .csrf(AbstractHttpConfigurer::disable)
                                 .authorizeHttpRequests(req -> req.requestMatchers("/api/v1/auth/**").permitAll()
                                                 .requestMatchers(HttpMethod.DELETE, "/usuario/delete").hasAnyAuthority(Rol.ADMIN.name())
@@ -48,6 +59,8 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.POST,"/categoria").hasAnyAuthority(Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.POST,"/artista").hasAnyAuthority(Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.POST,"/locacion").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.GET,"/locacion").hasAnyAuthority(Rol.ADMIN.name())
+
                                                 .anyRequest()
                                                 .authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

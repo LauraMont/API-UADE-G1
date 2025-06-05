@@ -95,11 +95,18 @@ git clone https://github.com/LauraMont/API-UADE-G1.git
 Modificá src/main/resources/application.properties:
 
 ```bash
-spring.datasource.url=jdbc:mysql://localhost:3306/marketplace
+spring.application.name=marketplace
+spring.datasource.url=jdbc:mysql://localhost:3306/soundpass
+spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
 spring.datasource.username=root
-spring.datasource.password=tu_password
-
+spring.datasource.password=your_mysql_pass
 spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+server.port=4002
+application.security.jwt.secretKey:<key>
+
+application.security.jwt.expiration: 86400000
+
 ```
 
 ### 3. Ejecutá la aplicación
