@@ -11,7 +11,7 @@ import com.uade.tpo.marketplace.entity.Zona;
 @Repository
 public interface ZonasRepository extends JpaRepository<Zona, Long> {
 
-    @Query("SELECT z FROM Zona z WHERE z.locacion = ?1")
+    @Query("SELECT z FROM Zona z WHERE z.locacion.id = ?1")
     List<Zona> findByLocacionId(Long locacionId);
     
 }

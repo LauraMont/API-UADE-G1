@@ -82,7 +82,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Recital 2025 - parte 3\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"1\",\r\n  \"locacion\": \"1\",\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": \"1\"\r\n}",
+							"raw": "{\r\n  \"nombre\": \"Festibal Rock\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"2\",\r\n  \"locacion\": \"2\",\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": \"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -135,6 +135,21 @@
 								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Evento por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/eventos/2"
 					},
 					"response": []
 				},
@@ -432,7 +447,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Estadio 1\",\r\n    \"descripcion\": \"\",\r\n    \"direccion\": \"Calle Falsa 12765\",\r\n    \"categoriaId\": \"1\",\r\n    \"zonas\":[\r\n        {\r\n            \"precio_base\": 10.2,\r\n            \"cantidad_butacas\": 5    \r\n        },\r\n        {\r\n            \"precio_base\": 20.34,\r\n            \"cantidad_butacas\": 10    \r\n        }\r\n\r\n    ]\r\n}",
+							"raw": "{\r\n    \"nombre\": \"Estadio 2\",\r\n    \"descripcion\": \"\",\r\n    \"direccion\": \"Calle Falsa 63852\",\r\n    \"categoriaId\": \"1\",\r\n    \"zonas\":[\r\n        {\r\n            \"precio_base\": 10.2,\r\n            \"cantidad_butacas\": 5    \r\n        },\r\n        {\r\n            \"precio_base\": 20.34,\r\n            \"cantidad_butacas\": 5    \r\n        }\r\n\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -456,7 +471,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Artista 1\",\r\n    \"descripcion\": \"\",\r\n    \"genero\": \"1\"\r\n}",
+							"raw": "{\r\n    \"nombre\": \"Artista 2\",\r\n    \"descripcion\": \"\",\r\n    \"genero\": \"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -464,6 +479,51 @@
 							}
 						},
 						"url": "{{url}}/artista"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Locacion por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{admin_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/locacion/id/1"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Zonas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/locacion/2/zonas"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Butacas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/locacion/zona/2/butacas"
 					},
 					"response": []
 				}

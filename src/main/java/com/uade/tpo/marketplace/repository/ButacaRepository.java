@@ -16,7 +16,7 @@ public interface ButacaRepository extends JpaRepository<Butaca, Long> {
     @Query("SELECT b FROM Butaca b WHERE b.numero = ?1")
     Butaca findByName(String butaca);
 
-    @Query("SELECT b FROM Butaca b WHERE b.zona = ?1")
+    @Query("SELECT b FROM Butaca b WHERE b.zona.id = ?1")
     List<Butaca> findByZonaId(Long zonaId);
     
     

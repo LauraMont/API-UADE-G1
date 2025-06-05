@@ -56,7 +56,7 @@ public class LocactionController {
     public ResponseEntity<List<ZonaRequest>> obtenerZonasPorLocacion(@PathVariable Long locacionId) throws LocacionNotExistException, EventNotExistException {
         List<ZonaRequest> zonas = zonaService.obtenerZonasPorLocacionId(locacionId)
                 .stream()
-                .map(zona -> new ZonaRequest(zona.getPrecio_base(), zona.getCantidad_butacas()))
+                .map(zona -> new ZonaRequest(zona.getPrecio_base(), zona.getCantidad_butacas(), zona.getId()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(zonas);
     }
