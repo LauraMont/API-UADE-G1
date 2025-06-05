@@ -14,7 +14,7 @@ public class ButacaService {
     @Autowired
     private ButacaRepository butacaRepository;
 
-    public List<Butaca> obtenerButacasPorZona(Long zonaId) {
-        return butacaRepository.findByZonaId(zonaId);
+    public List<Butaca> obtenerButacasPorZona(Long zonaId, boolean disponibilidad) {
+        return disponibilidad? butacaRepository.findByZonaIdDisponible(zonaId) : butacaRepository.findByZonaId(zonaId);
     }
 }

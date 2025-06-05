@@ -64,7 +64,14 @@ public class LocactionController {
     // ✅ Obtener butacas de una zona específica
     @GetMapping("/zona/{zonaId}/butacas")
     public ResponseEntity<List<Butaca>> obtenerButacasPorZona(@PathVariable Long zonaId) {
-        List<Butaca> butacas = butacaService.obtenerButacasPorZona(zonaId);
+        List<Butaca> butacas = butacaService.obtenerButacasPorZona(zonaId, false);
+        return ResponseEntity.ok(butacas);
+    }
+
+    // ✅ Obtener butacas disponibles de una zona específica
+    @GetMapping("/zona/{zonaId}/butacas/disponibles")
+    public ResponseEntity<List<Butaca>> obtenerButacasPorZonaDisponibles(@PathVariable Long zonaId) {
+        List<Butaca> butacas = butacaService.obtenerButacasPorZona(zonaId, true);
         return ResponseEntity.ok(butacas);
     }
 }
