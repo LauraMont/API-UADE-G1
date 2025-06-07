@@ -1,8 +1,6 @@
 package com.uade.tpo.marketplace.entity.dto;
 
 import lombok.Data;
-import lombok.Getter;
-
 
 @Data
 

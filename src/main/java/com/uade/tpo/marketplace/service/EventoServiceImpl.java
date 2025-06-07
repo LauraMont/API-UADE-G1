@@ -53,7 +53,7 @@ public class EventoServiceImpl implements EventoService {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
+    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int pDescuento) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
         Long artistaIdLong = Long.parseLong(artistaId);
         List<Evento> eventos = eventoRepository.findByNombre(nombre);
         Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
@@ -66,7 +66,7 @@ public class EventoServiceImpl implements EventoService {
             throw new LocacionNotExistException();
         }
         if (eventos.isEmpty()) {
-            Evento evento = new Evento(nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, locacion.getCapacidad_total());
+            Evento evento = new Evento(nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, locacion.getCapacidad_total(), pDescuento);
             return eventoRepository.save(evento);
         }
         throw new EventDuplicateException();
@@ -128,6 +128,12 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public List<Evento> obtenerDisponibles() {
         return eventoRepository.findByStockEntradasGreaterThan(0);
+    }
+
+    @Override
+    public int obtenerDescuentoPorEvento(Long eventoId) {
+        Evento evento = eventoRepository.findBy_Id(eventoId);
+        return evento.getPdescuento();
     }
 
 }
