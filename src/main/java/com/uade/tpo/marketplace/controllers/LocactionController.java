@@ -1,17 +1,21 @@
 package com.uade.tpo.marketplace.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.marketplace.entity.Butaca;
 import com.uade.tpo.marketplace.entity.Evento;
+import com.uade.tpo.marketplace.entity.Zona;
 import com.uade.tpo.marketplace.entity.dto.LocacionRequest;
 import com.uade.tpo.marketplace.entity.dto.ZonaRequest;
+import com.uade.tpo.marketplace.entity.dto.ZonaResponse;
 import com.uade.tpo.marketplace.exceptions.CategoryDuplicateException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
 import com.uade.tpo.marketplace.exceptions.LocacionDuplicadaException;
 import com.uade.tpo.marketplace.exceptions.LocacionNotExistException;
 import com.uade.tpo.marketplace.service.ButacaService;
+import com.uade.tpo.marketplace.service.EventoService;
 import com.uade.tpo.marketplace.service.LocacionService;
 import com.uade.tpo.marketplace.service.ZonaService;
 
@@ -38,6 +42,9 @@ public class LocactionController {
 
     @Autowired
     private ButacaService butacaService;
+
+    @Autowired
+    private EventoService eventoService;
     
     @PostMapping
     public ResponseEntity<LocacionRequest> createLocation(@RequestBody LocacionRequest locacionRequest) throws CategoryDuplicateException, LocacionDuplicadaException {
@@ -51,13 +58,12 @@ public class LocactionController {
         return ResponseEntity.ok(locacion);
     }
 
-    // ✅ Obtener zonas asociadas a una locación
     @GetMapping("/{locacionId}/zonas")
-    public ResponseEntity<List<ZonaRequest>> obtenerZonasPorLocacion(@PathVariable Long locacionId) throws LocacionNotExistException, EventNotExistException {
-        List<ZonaRequest> zonas = zonaService.obtenerZonasPorLocacionId(locacionId)
-                .stream()
-                .map(zona -> new ZonaRequest(zona.getPrecio_base(), zona.getCantidad_butacas(), zona.getId()))
-                .collect(Collectors.toList());
+    public ResponseEntity<List<ZonaResponse>> obtenerZonasPorLocacion(
+            @PathVariable Long locacionId,
+            @RequestParam(required = false) Long eventoId
+    ) throws LocacionNotExistException, EventNotExistException {
+        List<ZonaResponse> zonas = zonaService.obtenerZonasConPrecioFinal(locacionId, eventoId);
         return ResponseEntity.ok(zonas);
     }
 

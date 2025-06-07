@@ -53,25 +53,54 @@ public class EventoServiceImpl implements EventoService {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
-        Long artistaIdLong = Long.parseLong(artistaId);
-        List<Evento> eventos = eventoRepository.findByNombre(nombre);
-        Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
-        Locacion locacion = locacionRepository.findBy_Id(Long.parseLong(locacionId));
-        Categoria categoria = categoriaRepository.findBy_Id(Long.parseLong(categoriaId));
-        if (artista == null) {
-            throw new ArtistaNotExistException();
-        }
-        if(locacion == null) {
-            throw new LocacionNotExistException();
-        }
-        if (eventos.isEmpty()) {
-            Evento evento = new Evento(nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, locacion.getCapacidad_total());
-            return eventoRepository.save(evento);
-        }
-        throw new EventDuplicateException();
+    public Evento crearEvento(
+    String nombre,
+    String descripcion,
+    Date fecha_hora,
+    String artistaId,
+    String locacionId,
+    EstadoEvento estado,
+    String categoriaId,
+    int pDescuento
+) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
 
+    Long artistaIdLong = Long.parseLong(artistaId);
+    Long locacionIdLong = Long.parseLong(locacionId);
+    Long categoriaIdLong = Long.parseLong(categoriaId);
+
+    // Validar existencia
+    Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
+    if (artista == null) throw new ArtistaNotExistException();
+
+    Locacion locacion = locacionRepository.findBy_Id(locacionIdLong);
+    if (locacion == null) throw new LocacionNotExistException();
+
+    Categoria categoria = categoriaRepository.findBy_Id(categoriaIdLong);
+
+    // Validar que no exista otro evento en la misma locación y fecha
+    List<Evento> eventosMismaFechaYLocacion = eventoRepository
+        .findByLocacionIdAndFecha(locacionIdLong, fecha_hora); // Método custom que deberías crear
+
+    if (!eventosMismaFechaYLocacion.isEmpty()) {
+        throw new EventDuplicateException();
     }
+
+    // Crear evento
+    Evento evento = new Evento(
+        nombre,
+        descripcion,
+        fecha_hora,
+        artista,
+        locacion,
+        estado,
+        categoria,
+        locacion.getCapacidad_total(),
+        pDescuento
+    );
+
+    return eventoRepository.save(evento);
+}
+
 
     @Override
     public Page<Evento> getEventos(PageRequest pageRequest) {
@@ -128,6 +157,12 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public List<Evento> obtenerDisponibles() {
         return eventoRepository.findByStockEntradasGreaterThan(0);
+    }
+
+    @Override
+    public int obtenerDescuentoPorEvento(Long eventoId) {
+        Evento evento = eventoRepository.findBy_Id(eventoId);
+        return evento.getPdescuento();
     }
 
 }

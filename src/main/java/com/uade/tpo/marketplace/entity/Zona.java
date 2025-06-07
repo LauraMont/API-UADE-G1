@@ -18,6 +18,9 @@ public class Zona {
     private Long id;
 
     @Column
+    private String nombre;
+
+    @Column
     private float precio_base;
 
     @ManyToOne

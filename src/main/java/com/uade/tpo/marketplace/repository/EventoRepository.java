@@ -49,4 +49,7 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     @Query("SELECT e FROM Evento e WHERE e.id = ?1")
     Evento findBy_Id(Long id);
+
+    @Query("SELECT e FROM Evento e WHERE e.locacion.id = ?1 AND e.fechaHora = ?2")
+    List<Evento> findByLocacionIdAndFecha(Long locacionIdLong, Date fecha_hora);
 }

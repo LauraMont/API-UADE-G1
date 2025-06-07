@@ -1,19 +1,12 @@
 package com.uade.tpo.marketplace.controllers;
 
-import com.uade.tpo.marketplace.entity.Butaca;
 import com.uade.tpo.marketplace.entity.Evento;
-import com.uade.tpo.marketplace.entity.Zona;
 import com.uade.tpo.marketplace.entity.dto.EventoRequest;
-import com.uade.tpo.marketplace.entity.dto.ZonaRequest;
 import com.uade.tpo.marketplace.exceptions.ArtistaNotExistException;
 import com.uade.tpo.marketplace.exceptions.EventDuplicateException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
 import com.uade.tpo.marketplace.exceptions.LocacionNotExistException;
-import com.uade.tpo.marketplace.service.ButacaService;
 import com.uade.tpo.marketplace.service.EventoService;
-import com.uade.tpo.marketplace.service.ZonaService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,7 +52,7 @@ public class EventoController {
 
     @PostMapping // only admin can create events
     public ResponseEntity<Evento> crearEvento( @RequestBody EventoRequest request) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
-        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getLocacion(), request.getArtista(), request.getEstado(), request.getCategoria());
+        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getLocacion(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getPdescuento());
         return ResponseEntity.ok(nuevoEvento);
     }
 
