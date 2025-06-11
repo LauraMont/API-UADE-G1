@@ -17,5 +17,7 @@ public class EventoRequest {
     private String categoria;
     private int pdescuento;
     private int stockEntradas;
+    private String imagenEvento;
+    private String imagenZonas;
 }
 

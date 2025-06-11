@@ -61,7 +61,9 @@ public class EventoServiceImpl implements EventoService {
     String locacionId,
     EstadoEvento estado,
     String categoriaId,
-    int pDescuento
+    int pDescuento,
+    String imagenEvento,
+    String imagenZonas
 ) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
 
     Long artistaIdLong = Long.parseLong(artistaId);
@@ -95,7 +97,9 @@ public class EventoServiceImpl implements EventoService {
         estado,
         categoria,
         locacion.getCapacidad_total(),
-        pDescuento
+        pDescuento,
+        imagenEvento,
+        imagenZonas
     );
 
     return eventoRepository.save(evento);
@@ -113,7 +117,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId ,EstadoEvento estado, String categoriaId, int cant_entradas) throws EventNotExistException {
+    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId ,EstadoEvento estado, String categoriaId, int cant_entradas, String imagenEvento, String imagenZonas) throws EventNotExistException {
         Long artistaIdLong = Long.parseLong(artistaId);
         Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
         Locacion locacion = locacionRepository.findBy_Id(Long.parseLong(locacionId));
@@ -127,7 +131,7 @@ public class EventoServiceImpl implements EventoService {
         if(locacion== null) {
             throw new EventNotExistException();
         }
-        eventoRepository.updateEvento(eventoId, nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, cant_entradas);
+        eventoRepository.updateEvento(eventoId, nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, cant_entradas, imagenEvento, imagenZonas);
     }
 
     @Override

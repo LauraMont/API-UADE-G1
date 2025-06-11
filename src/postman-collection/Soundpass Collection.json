@@ -82,7 +82,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Festival con descuento duplicado 123\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-12-12T21:00:00\",\r\n  \"artista\":2,\r\n  \"locacion\": 2,\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": 1,\r\n  \"pdescuento\": 20\r\n}",
+							"raw": "{\r\n  \"nombre\": \"Festival con descuento duplicado 123\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-12-12T21:00:00\",\r\n  \"artista\":2,\r\n  \"locacion\": 2,\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": 1,\r\n  \"pdescuento\": 20\r\n  \"imagenEvento\": \"https://placehold.co/600/00100B/5EDA57?text=Festival+con+descuento\"\r\n  \"imagenZonas\": \"https://placehold.co/600/00100B/5EDA57?text=Zonas+Festival\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

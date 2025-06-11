@@ -22,7 +22,7 @@ public class Evento {
 
     public Evento() {
     }
-    public Evento(String nombre, String descripcion, Date fecha_hora, Artista artista, Locacion locacion, EstadoEvento estado, Categoria categoria, int cant_entradas, int pdescuento) {
+    public Evento(String nombre, String descripcion, Date fecha_hora, Artista artista, Locacion locacion, EstadoEvento estado, Categoria categoria, int cant_entradas, int pdescuento, String imagenEvento, String imagenZonas) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaHora = fecha_hora;
@@ -32,6 +32,8 @@ public class Evento {
         this.categoria = categoria;
         this.stockEntradas = cant_entradas;
         this.pdescuento = pdescuento;
+        this.imagenEvento = imagenEvento;
+        this.imagenZonas = imagenEvento;
     }
 
     @Id
@@ -67,5 +69,11 @@ public class Evento {
 
     @Column
     private int pdescuento;
+
+    @Column
+    private String imagenEvento;
+
+    @Column
+    private String imagenZonas;
 
 }
