@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.repository.query.Param;
 
 import com.uade.tpo.marketplace.entity.Artista;
 import com.uade.tpo.marketplace.entity.Categoria;
@@ -26,8 +25,8 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Evento e SET e.nombre = ?2, e.descripcion = ?3, e.fechaHora = ?4, e.artista = ?5,e.locacion=?6  ,e.estado = ?7, e.categoria = ?8, e.stockEntradas = ?9 WHERE e.id = ?1")
-    void updateEvento(Long eventoId, String nombre, String descripcion, Date fechaHora, Artista artista, Locacion locacion, EstadoEvento estado, Categoria categoria, int cantEntradas);
+    @Query("UPDATE Evento e SET e.nombre = ?2, e.descripcion = ?3, e.fechaHora = ?4, e.artista = ?5,e.locacion=?6  ,e.estado = ?7, e.categoria = ?8, e.stockEntradas = ?9, e.imagenEvento = ?10, e.imagenZonas = ?11 WHERE e.id = ?1")
+    void updateEvento(Long eventoId, String nombre, String descripcion, Date fechaHora, Artista artista, Locacion locacion, EstadoEvento estado, Categoria categoria, int cantEntradas, String imagenEvento, String imagenZonas);
 
 
     @Query("SELECT e FROM Evento e WHERE e.nombre = ?1")
@@ -39,39 +38,18 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     @Query("SELECT e FROM Evento e WHERE e.categoria = ?1")
     List<Evento> findByCategoriaId(Long categoriaId);
 
-    @Query("SELECT e FROM Evento e WHERE LOWER(e.artista.nombre) LIKE LOWER(CONCAT('%', ?1, '%'))")
+    @Query("SELECT e FROM Evento e WHERE LOWER(e.artista) = LOWER(?1)")
     List<Evento> findByArtistaContainingIgnoreCase(String artista);
 
     @Query("SELECT e FROM Evento e WHERE e.stockEntradas > ?1")
     List<Evento> findByStockEntradasGreaterThan(int cantidad);
 
-    @Query("SELECT e FROM Evento e WHERE e.artista.id = ?1")
-    List<Evento> findByArtista_Id(Long artistaId);
+    @Query("SELECT e FROM Evento e WHERE e.artista = ?1")
+    List<Evento> findByArtista_Id(String artista);
 
-    @Query("SELECT e FROM Evento e WHERE e.fechaHora BETWEEN ?1 AND ?2")
-    List<Evento> findByFechaHoraBetween(Date fechaInicio, Date fechaFin);
+    @Query("SELECT e FROM Evento e WHERE e.id = ?1")
+    Evento findBy_Id(Long id);
 
-    @Query("SELECT e FROM Evento e WHERE e.estado = ?1")
-    List<Evento> findByEstado(EstadoEvento estado);
-
-    @Query("SELECT e FROM Evento e WHERE e.locacion = ?1")
-    List<Evento> findByLocacion(Locacion locacion);
-
-    @Query("SELECT e FROM Evento e WHERE " +
-           "(:nombre IS NULL OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))) AND " +
-           "(:categoria IS NULL OR e.categoria = :categoria) AND " +
-           "(:artista IS NULL OR e.artista = :artista) AND " +
-           "(:estado IS NULL OR e.estado = :estado) AND " +
-           "(:fechaInicio IS NULL OR e.fechaHora >= :fechaInicio) AND " +
-           "(:fechaFin IS NULL OR e.fechaHora <= :fechaFin) AND " +
-           "(:stockMin IS NULL OR e.stockEntradas >= :stockMin)")
-    List<Evento> findEventosByFiltros(
-        @Param("nombre") String nombre,
-        @Param("categoria") Categoria categoria,
-        @Param("artista") Artista artista,
-        @Param("estado") EstadoEvento estado,
-        @Param("fechaInicio") Date fechaInicio,
-        @Param("fechaFin") Date fechaFin,
-        @Param("stockMin") Integer stockMin
-    );
+    @Query("SELECT e FROM Evento e WHERE e.locacion.id = ?1 AND e.fechaHora = ?2")
+    List<Evento> findByLocacionIdAndFecha(Long locacionIdLong, Date fecha_hora);
 }

@@ -15,9 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.sql.Date;
-
-import com.uade.tpo.marketplace.enums.EstadoEvento;
 
 @RestController
 @RequestMapping("/eventos")
@@ -26,41 +23,24 @@ public class EventoController {
     @Autowired
     private EventoService eventoService;
 
-    @GetMapping("/disponibles") 
+    @GetMapping("/disponibles") // all users can see available events
     public List<Evento> disponibles() {
         return eventoService.obtenerDisponibles();
     }
 
-    @GetMapping("/buscar") 
+    @GetMapping("/buscar") // all users can search events by name, category or artist
     public ResponseEntity<List<Evento>> buscar(
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String categoria,
-            @RequestParam(required = false) String artista,
-            @RequestParam(required = false) EstadoEvento estado,
-            @RequestParam(required = false) String locacion,
-            @RequestParam(required = false) Integer stockMin
+            @RequestParam(required = false) String artista
     ) {
-        if (estado != null || locacion != null || stockMin != null) {
-            return ResponseEntity.ok(eventoService.buscarPorFiltros(nombre, categoria, artista, estado, null, null, stockMin));
-        }
-        
         if (nombre != null) return ResponseEntity.ok(eventoService.buscarPorNombre(nombre));
         if (categoria != null) return ResponseEntity.ok(eventoService.buscarPorCategoria(categoria));
         if (artista != null) return ResponseEntity.ok(eventoService.buscarPorArtista(artista));
-        return ResponseEntity.ok(eventoService.getEventos(PageRequest.of(0, Integer.MAX_VALUE)).getContent());
+        return ResponseEntity.ok(eventoService.getEventos(PageRequest.of(0, Integer.MAX_VALUE)).getContent()); // Return all events if no filter is applied
     }
 
-    @GetMapping("/estado/{estado}") 
-    public ResponseEntity<List<Evento>> buscarPorEstado(@PathVariable EstadoEvento estado) {
-        return ResponseEntity.ok(eventoService.buscarPorEstado(estado));
-    }
-
-    @GetMapping("/locacion/{locacionId}") 
-    public ResponseEntity<List<Evento>> buscarPorLocacion(@PathVariable String locacionId) {
-        return ResponseEntity.ok(eventoService.buscarPorLocacion(locacionId));
-    }
-
-    @GetMapping
+    @GetMapping // all users can see all events
     public ResponseEntity<Page<Evento>> getEventos(
         @RequestParam(required = false) Integer page, 
         @RequestParam(required = false) Integer size) {
@@ -70,42 +50,22 @@ public class EventoController {
         return ResponseEntity.ok(eventoService.getEventos(PageRequest.of(page, size)));
     }
 
-    @PostMapping 
-    public ResponseEntity<Evento> crearEvento(@RequestBody EventoRequest request) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
-        Evento nuevoEvento = eventoService.crearEvento(
-            request.getNombre(), 
-            request.getDescripcion(), 
-            request.getFechaHora(), 
-            request.getArtistaId(), 
-            request.getLocacionId(), 
-            request.getEstado(), 
-            request.getCategoriaId()
-        );
+    @PostMapping // only admin can create events
+    public ResponseEntity<Evento> crearEvento( @RequestBody EventoRequest request) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
+        Evento nuevoEvento = eventoService.crearEvento(request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getLocacion(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getPdescuento(), request.getImagenEvento(), request.getImagenZonas());
         return ResponseEntity.ok(nuevoEvento);
     }
 
-    @GetMapping("/{id}") 
+    @GetMapping("/{id}") // all users can see all events
     public ResponseEntity<Evento> getEventoById(@PathVariable Long id) throws EventNotExistException {
         return ResponseEntity.ok(eventoService.getEventoById(id));
     }
-
-    @PutMapping("/{id}") 
+    @PutMapping("/{id}") // only admin can edit events
     public ResponseEntity<String> editEvento(@PathVariable Long id, @RequestBody EventoRequest request) throws EventNotExistException {
-        eventoService.editEvento(
-            id, 
-            request.getNombre(), 
-            request.getDescripcion(), 
-            request.getFechaHora(), 
-            request.getArtistaId(), 
-            request.getLocacionId(), 
-            request.getEstado(), 
-            request.getCategoriaId(), 
-            request.getStockEntradas()
-        );
+        eventoService.editEvento(id, request.getNombre(), request.getDescripcion(), request.getFechaHora(), request.getLocacion(), request.getArtista(), request.getEstado(), request.getCategoria(), request.getStockEntradas(), request.getImagenEvento(), request.getImagenZonas());
         return ResponseEntity.ok("Evento editado correctamente");
     }
-
-    @DeleteMapping("/{id}") 
+    @DeleteMapping("/{id}") // only admin can delete events
     public ResponseEntity<String> deleteEvento(@PathVariable Long id) throws EventNotExistException {
         eventoService.deleteEvento(id);
         return ResponseEntity.ok("Evento eliminado correctamente");

@@ -10,10 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.uade.tpo.marketplace.entity.Rol;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,43 +26,46 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JWTAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
+        private final JWTAuthenticationFilter jwtAuthFilter;
+        private final AuthenticationProvider authenticationProvider;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(req -> req
-                // Auth endpoints
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                
-                // Event endpoints
-                .requestMatchers("/eventos/**").permitAll()  // Allow all /eventos paths by default
-                .requestMatchers(HttpMethod.GET, "/eventos/{id}").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/eventos").hasAnyAuthority(Rol.ADMIN.name())
-                .requestMatchers(HttpMethod.PUT, "/eventos/{id}").hasAnyAuthority(Rol.ADMIN.name())
-                .requestMatchers(HttpMethod.DELETE, "/eventos/{id}").hasAnyAuthority(Rol.ADMIN.name())
-                
-                // Category endpoints
-                .requestMatchers(HttpMethod.GET, "/categoria/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/categoria").hasAnyAuthority(Rol.ADMIN.name())
-                
-                // Other endpoints
-                .requestMatchers(HttpMethod.DELETE, "/usuario/delete").hasAnyAuthority(Rol.ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/compras").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/artista").hasAnyAuthority(Rol.ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/locacion").hasAnyAuthority(Rol.ADMIN.name())
-                .requestMatchers("/nombre/{nombre}").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
-                
-                // Default
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { //configuro seguridad http
+                http
+                        .cors(cors -> cors.configurationSource(request -> {
+                        CorsConfiguration config = new CorsConfiguration();
+                        config.setAllowedOrigins(List.of("http://localhost:5173"));
+                        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                        config.setAllowedHeaders(List.of("*"));
+                        config.setAllowCredentials(true);
+                        return config;
+                        }))
+                                .csrf(AbstractHttpConfigurer::disable)
+                                .authorizeHttpRequests(req -> req.requestMatchers("/api/v1/auth/**").permitAll()
+                                                .requestMatchers(HttpMethod.DELETE, "/usuario/delete").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.POST,"/compras").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
+                                                .requestMatchers("/eventos").permitAll()
+                                                .requestMatchers("/eventos/disponibles").permitAll()
+                                                .requestMatchers("/eventos/buscar").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/eventos/{id}").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.POST, "/eventos/{id}").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.PUT, "/eventos/{id}").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.DELETE, "/eventos/{id}").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.GET,"/categoria").permitAll()
+                                                .requestMatchers(HttpMethod.GET,"/categoria/nombre/{nombre}").permitAll()
+                                                .requestMatchers("/nombre/{nombre}").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.POST,"/categoria").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.POST,"/artista").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.POST,"/locacion").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.GET,"/locacion").hasAnyAuthority(Rol.ADMIN.name())
 
-        return http.build();
-    }
+                                                .anyRequest()
+                                                .authenticated())
+                                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                                .authenticationProvider(authenticationProvider)
+                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+                return http.build();
+        }
 }
 

@@ -1,19 +1,24 @@
 package com.uade.tpo.marketplace.service;
 
 import com.uade.tpo.marketplace.entity.Artista;
+import com.uade.tpo.marketplace.entity.Butaca;
 import com.uade.tpo.marketplace.entity.Categoria;
 // import com.uade.tpo.marketplace.controllers.EventoRequest;
 import com.uade.tpo.marketplace.entity.Evento;
 import com.uade.tpo.marketplace.entity.Locacion;
+import com.uade.tpo.marketplace.entity.Zona;
 import com.uade.tpo.marketplace.enums.EstadoEvento;
 import com.uade.tpo.marketplace.exceptions.ArtistaNotExistException;
 import com.uade.tpo.marketplace.exceptions.EventDuplicateException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
 import com.uade.tpo.marketplace.exceptions.LocacionNotExistException;
 import com.uade.tpo.marketplace.repository.ArtistaRepository;
+import com.uade.tpo.marketplace.repository.ButacaRepository;
 import com.uade.tpo.marketplace.repository.CategoriaRepository;
+import com.uade.tpo.marketplace.repository.EntradaRepository;
 import com.uade.tpo.marketplace.repository.EventoRepository;
 import com.uade.tpo.marketplace.repository.LocacionRepository;
+import com.uade.tpo.marketplace.repository.ZonasRepository;
 
 import java.sql.Date;
 import java.util.List;
@@ -38,30 +43,68 @@ public class EventoServiceImpl implements EventoService {
     @Autowired
     private LocacionRepository locacionRepository;
 
+    @Autowired
+    private ButacaRepository butacaRepository;
+
+    @Autowired
+    private ZonasRepository zonasRepository;
+
     EventoServiceImpl(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
-        // Verificar si el evento ya existe
-        Long artistaIdLong = Long.parseLong(artistaId);
-        List<Evento> eventos = eventoRepository.findByNombre(nombre);
-        Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
-        Locacion locacion = locacionRepository.findBy_Id(Long.parseLong(locacionId));
-        Categoria categoria = categoriaRepository.findBy_Id(Long.parseLong(categoriaId));
-        //artista debe existir
-        if (artista == null) {
-            throw new ArtistaNotExistException();
-        }
-        if(locacion == null) {
-            throw new LocacionNotExistException();
-        }
-        if (eventos.isEmpty()) {
-            return eventoRepository.save(new Evento(nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, locacion.getCapacidad_total()));
-        }
-        throw new EventDuplicateException();
+    public Evento crearEvento(
+    String nombre,
+    String descripcion,
+    Date fecha_hora,
+    String artistaId,
+    String locacionId,
+    EstadoEvento estado,
+    String categoriaId,
+    int pDescuento,
+    String imagenEvento,
+    String imagenZonas
+) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
 
+    Long artistaIdLong = Long.parseLong(artistaId);
+    Long locacionIdLong = Long.parseLong(locacionId);
+    Long categoriaIdLong = Long.parseLong(categoriaId);
+
+    // Validar existencia
+    Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
+    if (artista == null) throw new ArtistaNotExistException();
+
+    Locacion locacion = locacionRepository.findBy_Id(locacionIdLong);
+    if (locacion == null) throw new LocacionNotExistException();
+
+    Categoria categoria = categoriaRepository.findBy_Id(categoriaIdLong);
+
+    // Validar que no exista otro evento en la misma locación y fecha
+    List<Evento> eventosMismaFechaYLocacion = eventoRepository
+        .findByLocacionIdAndFecha(locacionIdLong, fecha_hora); // Método custom que deberías crear
+
+    if (!eventosMismaFechaYLocacion.isEmpty()) {
+        throw new EventDuplicateException();
     }
+
+    // Crear evento
+    Evento evento = new Evento(
+        nombre,
+        descripcion,
+        fecha_hora,
+        artista,
+        locacion,
+        estado,
+        categoria,
+        locacion.getCapacidad_total(),
+        pDescuento,
+        imagenEvento,
+        imagenZonas
+    );
+
+    return eventoRepository.save(evento);
+}
+
 
     @Override
     public Page<Evento> getEventos(PageRequest pageRequest) {
@@ -74,7 +117,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId ,EstadoEvento estado, String categoriaId, int cant_entradas) throws EventNotExistException {
+    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId ,EstadoEvento estado, String categoriaId, int cant_entradas, String imagenEvento, String imagenZonas) throws EventNotExistException {
         Long artistaIdLong = Long.parseLong(artistaId);
         Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
         Locacion locacion = locacionRepository.findBy_Id(Long.parseLong(locacionId));
@@ -88,7 +131,7 @@ public class EventoServiceImpl implements EventoService {
         if(locacion== null) {
             throw new EventNotExistException();
         }
-        eventoRepository.updateEvento(eventoId, nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, cant_entradas);
+        eventoRepository.updateEvento(eventoId, nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, cant_entradas, imagenEvento, imagenZonas);
     }
 
     @Override
@@ -121,52 +164,9 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public List<Evento> buscarPorFechaHora(Date fechaInicio, Date fechaFin) {
-        return eventoRepository.findByFechaHoraBetween(fechaInicio, fechaFin);
+    public int obtenerDescuentoPorEvento(Long eventoId) {
+        Evento evento = eventoRepository.findBy_Id(eventoId);
+        return evento.getPdescuento();
     }
 
-    @Override
-    public List<Evento> buscarPorEstado(EstadoEvento estado) {
-        return eventoRepository.findByEstado(estado);
-    }
-
-    @Override
-    public List<Evento> buscarPorLocacion(String locacionId) {
-        Locacion locacion = locacionRepository.findBy_Id(Long.parseLong(locacionId));
-        if (locacion == null) {
-            return List.of();
-        }
-        return eventoRepository.findByLocacion(locacion);
-    }
-
-    @Override
-    public List<Evento> buscarPorFiltros(
-        String nombre,
-        String categoriaId,
-        String artistaId,
-        EstadoEvento estado,
-        Date fechaInicio,
-        Date fechaFin,
-        Integer stockMin
-    ) {
-        Categoria categoria = null;
-        if (categoriaId != null) {
-            categoria = categoriaRepository.findBy_Id(Long.parseLong(categoriaId));
-        }
-
-        Artista artista = null;
-        if (artistaId != null) {
-            artista = artistaRepository.findByArtista_Id(Long.parseLong(artistaId));
-        }
-
-        return eventoRepository.findEventosByFiltros(
-            nombre,
-            categoria,
-            artista,
-            estado,
-            fechaInicio,
-            fechaFin,
-            stockMin
-        );
-    }
 }

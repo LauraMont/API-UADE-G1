@@ -17,10 +17,9 @@ public class Compra {
 
     public Compra() {
     }
-    public Compra( Usuario usuario, Evento evento,int cantidad , float total) {
+    public Compra( Usuario usuario, Evento evento , float total) {
         this.fecha = new Date(System.currentTimeMillis());
         this.total = total;
-        this.cantidad = cantidad;
         this.usuario = usuario;
         this.evento = evento;
     }

@@ -21,8 +21,10 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json"
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -41,6 +43,9 @@
 				{
 					"name": "GET Categoria por Nombre",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [],
 						"url": "{{url}}/categoria/nombre/Jazz"
@@ -50,6 +55,9 @@
 				{
 					"name": "GET Categorias",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [],
 						"url": "{{url}}/categoria"
@@ -71,15 +79,10 @@
 							}
 						},
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Recital 2025\",\r\n  \"descripcion\": \"Pop en vivo\",\r\n  \"fechaHora\": \"2025-08-12\",\r\n  \"artistaId\": \"1\",\r\n  \"locacionId\": \"1\",\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoriaId\": \"1\",\r\n  \"stockEntradas\": 100\r\n}",
+							"raw": "{\r\n  \"nombre\": \"Festival con descuento duplicado 123\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-12-12T21:00:00\",\r\n  \"artista\":2,\r\n  \"locacion\": 2,\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": 1,\r\n  \"pdescuento\": 20\r\n  \"imagenEvento\": \"https://placehold.co/600/00100B/5EDA57?text=Festival+con+descuento\"\r\n  \"imagenZonas\": \"https://placehold.co/600/00100B/5EDA57?text=Zonas+Festival\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -93,6 +96,12 @@
 				{
 					"name": "GET Eventos",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
 						"method": "GET",
 						"header": [],
 						"url": "{{url}}/eventos"
@@ -102,10 +111,16 @@
 				{
 					"name": "GET Evento por nombre",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/eventos/buscar?nombre=Recital",
+							"raw": "{{url}}/eventos/buscar?nombre=Recital 20",
 							"host": [
 								"{{url}}"
 							],
@@ -116,7 +131,7 @@
 							"query": [
 								{
 									"key": "nombre",
-									"value": "Recital"
+									"value": "Recital 20"
 								}
 							]
 						}
@@ -124,72 +139,17 @@
 					"response": []
 				},
 				{
-					"name": "GET Evento con filtros múltiples",
+					"name": "GET Evento por id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{url}}/eventos/buscar?nombre=Recital&estado=ACTIVO&stockMin=10",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"eventos",
-								"buscar"
-							],
-							"query": [
-								{
-									"key": "nombre",
-									"value": "Recital"
-								},
-								{
-									"key": "estado",
-									"value": "ACTIVO"
-								},
-								{
-									"key": "stockMin",
-									"value": "10"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET Evento por estado",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/eventos/estado/ACTIVO",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"eventos",
-								"estado",
-								"ACTIVO"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET Evento por locación",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/eventos/locacion/1",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"eventos",
-								"locacion",
-								"1"
-							]
-						}
+						"url": "{{url}}/eventos/2"
 					},
 					"response": []
 				},
@@ -199,7 +159,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/eventos/buscar?artista=Artista1",
+							"raw": "{{url}}/eventos/buscar?artista=Artista 1",
 							"host": [
 								"{{url}}"
 							],
@@ -210,7 +170,7 @@
 							"query": [
 								{
 									"key": "artista",
-									"value": "Artista1"
+									"value": "Artista 1"
 								}
 							]
 						}
@@ -220,6 +180,12 @@
 				{
 					"name": "GET Eventos Disponibles",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
 						"method": "GET",
 						"header": [],
 						"url": "{{url}}/eventos/disponibles"
@@ -236,15 +202,10 @@
 							}
 						},
 						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Recital 2025 Actualizado\",\r\n  \"descripcion\": \"Pop en vivo actualizado\",\r\n  \"fechaHora\": \"2025-08-12\",\r\n  \"artistaId\": \"1\",\r\n  \"locacionId\": \"1\",\r\n  \"estado\": \"FINALIZADO\",\r\n  \"categoriaId\": \"1\",\r\n  \"stockEntradas\": 50\r\n}",
+							"raw": "{\r\n  \"nombre\": \"Recital 2\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"1\",\r\n  \"locacion\": \"1\",\r\n  \"estado\": \"FINALIZADO\",\r\n  \"categoria\": \"1\",\r\n  \"stockEntradas\": 100,\r\n  \"cantEntradas\": 50,\r\n  \"pdescuento\":10\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -266,7 +227,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "{{url}}/eventos/1"
+						"url": "{{url}}/eventos/"
 					},
 					"response": []
 				}
@@ -282,28 +243,27 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"let json = pm.response.json();",
-									"let token = json.access_token;",
-									"",
-									"if (token) {",
-									"    pm.environment.set(\"admin_token\", token);",
-									"    console.log(\"✅ Token guardado en variable de entorno.\");",
-									"} else {",
-									"    console.warn(\"⚠️ No se encontró el token en la respuesta.\");",
-									"}"
+									"// Extrae el token del JSON de la respuesta\r",
+									"let json = pm.response.json();\r",
+									"let token = json.access_token;\r",
+									"\r",
+									"if (token) {\r",
+									"    // Lo guarda como variable de entorno\r",
+									"    pm.environment.set(\"admin_token\", token);\r",
+									"    console.log(\"✅ Token guardado en variable de entorno.\");\r",
+									"} else {\r",
+									"    console.warn(\"⚠️ No se encontró el token en la respuesta.\");\r",
+									"}\r",
+									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"nombre\": \"Admin SoundPass\",\r\n  \"email\": \"administrador@soundpass.com\",\r\n  \"password\": \"admin123\",\r\n  \"rol\": \"ADMIN\"\r\n}",
@@ -324,28 +284,27 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"let json = pm.response.json();",
-									"let token = json.access_token;",
-									"",
-									"if (token) {",
-									"    pm.environment.set(\"admin_token\", token);",
-									"    console.log(\"✅ Token guardado en variable de entorno.\");",
-									"} else {",
-									"    console.warn(\"⚠️ No se encontró el token en la respuesta.\");",
-									"}"
+									"// Extrae el token del JSON de la respuesta\r",
+									"let json = pm.response.json();\r",
+									"let token = json.access_token;\r",
+									"\r",
+									"if (token) {\r",
+									"    // Lo guarda como variable de entorno\r",
+									"    pm.environment.set(\"admin_token\", token);\r",
+									"    console.log(\"✅ Token guardado en variable de entorno.\");\r",
+									"} else {\r",
+									"    console.warn(\"⚠️ No se encontró el token en la respuesta.\");\r",
+									"}\r",
+									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"email\": \"administrador@soundpass.com\",\r\n  \"password\": \"admin123\"\r\n}",
@@ -366,28 +325,27 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"let json = pm.response.json();",
-									"let token = json.access_token;",
-									"",
-									"if (token) {",
-									"    pm.environment.set(\"user_token\", token);",
-									"    console.log(\"✅ Token guardado en variable de entorno.\");",
-									"} else {",
-									"    console.warn(\"⚠️ No se encontró el token en la respuesta.\");",
-									"}"
+									"// Extrae el token del JSON de la respuesta\r",
+									"let json = pm.response.json();\r",
+									"let token = json.access_token;\r",
+									"\r",
+									"if (token) {\r",
+									"    // Lo guarda como variable de entorno\r",
+									"    pm.environment.set(\"user_token\", token);\r",
+									"    console.log(\"✅ Token guardado en variable de entorno.\");\r",
+									"} else {\r",
+									"    console.warn(\"⚠️ No se encontró el token en la respuesta.\");\r",
+									"}\r",
+									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"nombre\": \"User SoundPass\",\r\n  \"email\": \"user@soundpass.com\",\r\n  \"password\": \"user123\",\r\n  \"rol\": \"USER\"\r\n}",
@@ -408,28 +366,27 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"let json = pm.response.json();",
-									"let token = json.access_token;",
-									"",
-									"if (token) {",
-									"    pm.environment.set(\"user_token\", token);",
-									"    console.log(\"✅ Token guardado en variable de entorno.\");",
-									"} else {",
-									"    console.warn(\"⚠️ No se encontró el token en la respuesta.\");",
-									"}"
+									"// Extrae el token del JSON de la respuesta\r",
+									"let json = pm.response.json();\r",
+									"let token = json.access_token;\r",
+									"\r",
+									"if (token) {\r",
+									"    // Lo guarda como variable de entorno\r",
+									"    pm.environment.set(\"user_token\", token);\r",
+									"    console.log(\"✅ Token guardado en variable de entorno.\");\r",
+									"} else {\r",
+									"    console.warn(\"⚠️ No se encontró el token en la respuesta.\");\r",
+									"}\r",
+									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"email\": \"user@soundpass.com\",\r\n  \"password\": \"user123\"\r\n}",
@@ -458,15 +415,10 @@
 							}
 						},
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"usuarioId\": 1,\r\n  \"eventoId\": 1,\r\n  \"cantidad\": 2,\r\n  \"total\": 200.00\r\n}",
+							"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"eventoId\": 1,\r\n    \"butacas\":[6]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -492,15 +444,10 @@
 							}
 						},
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Estadio 1\",\r\n    \"descripcion\": \"Estadio principal\",\r\n    \"direccion\": \"Calle Falsa 123\",\r\n    \"capacidad_total\": 100,\r\n    \"categoriaId\": \"1\"\r\n}",
+							"raw": "{\r\n    \"nombre\": \"Estadio 2\",\r\n    \"descripcion\": \"\",\r\n    \"direccion\": \"Calle Falsa 63852\",\r\n    \"categoriaId\": \"1\",\r\n    \"zonas\":[\r\n        {\r\n            \"precio_base\": 10.2,\r\n            \"cantidad_butacas\": 5    \r\n        },\r\n        {\r\n            \"precio_base\": 20.34,\r\n            \"cantidad_butacas\": 5    \r\n        }\r\n\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -521,15 +468,10 @@
 							}
 						},
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Artista 1\",\r\n    \"descripcion\": \"Artista principal\",\r\n    \"genero\": \"1\"\r\n}",
+							"raw": "{\r\n    \"nombre\": \"Artista 2\",\r\n    \"descripcion\": \"\",\r\n    \"genero\": \"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -539,15 +481,96 @@
 						"url": "{{url}}/artista"
 					},
 					"response": []
+				},
+				{
+					"name": "GET Locacion por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{admin_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/locacion/id/1"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Zonas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/locacion/1/zonas?eventoId=9",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"locacion",
+								"1",
+								"zonas"
+							],
+							"query": [
+								{
+									"key": "eventoId",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Butacas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/locacion/zona/2/butacas"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Butacas Disponibles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/locacion/zona/2/butacas/disponibles"
+					},
+					"response": []
 				}
 			]
 		}
 	],
 	"variable": [
 		{
-			"key": "url",
-			"value": "http://localhost:8080",
-			"type": "string"
+			"key": "AdminToken",
+			"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbmlzdHJhZG9yQHNvdW5kcGFzcy5jb20iLCJpYXQiOjE3NDQzMTczMTIsImV4cCI6MTc0NDQwMzcxMn0.E2-nMZGdjm3w7aQOrM7NZfAhz9LQUqnBtRLS4UomHSo",
+			"type": "default"
+		},
+		{
+			"key": "UserToken",
+			"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHNvdW5kcGFzcy5jb20iLCJpYXQiOjE3NDQzMTkwOTUsImV4cCI6MTc0NDQwNTQ5NX0.VFcmwRNwhvvZxJ_fZ4FOlORn7bdx0FbtVZu18-BrKmE",
+			"type": "default"
 		}
 	]
 }

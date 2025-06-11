@@ -32,13 +32,54 @@ Permitir a los usuarios:
 
 ---
 
-## 📦 Endpoints principales (ejemplos)
+## 📚 Endpoints
 
-| Método | Endpoint              | Descripción                         |
-|--------|-----------------------|-------------------------------------|
-| GET    | `/eventos`            | Listar todos los eventos            |
-| POST   | `/usuarios`           | Registrar nuevo usuario             |
-| POST   | `/compras`            | Crear nueva compra                  |
+### 👤 Autenticación de Usuarios
+
+| Método | Endpoint                         | Descripción                          |
+|--------|----------------------------------|--------------------------------------|
+| POST   | `/api/v1/auth/register`          | Registro de nuevo usuario/admin      |
+| POST   | `/api/v1/auth/authenticate`      | Autenticación y obtención de token   |
+
+---
+
+### 🧑‍💼 Usuarios
+
+| Método | Endpoint      | Descripción                | Autenticación |
+|--------|---------------|----------------------------|----------------|
+| POST   | `/usuarios`   | Crear nuevo usuario        | ❌             |
+
+---
+
+### 🏷️ Categorías
+
+| Método | Endpoint                         | Descripción                         | Autenticación |
+|--------|----------------------------------|-------------------------------------|---------------|
+| POST   | `/categoria`                     | Crear nueva categoría               | ✅ `admin_token` |
+| GET    | `/categoria`                     | Listar todas las categorías         | ❌             |
+| GET    | `/categoria/nombre/:nombre`      | Buscar categoría por nombre         | ❌             |
+
+---
+
+### 🎫 Eventos
+
+| Método | Endpoint                          | Descripción                               | Autenticación     |
+|--------|-----------------------------------|-------------------------------------------|-------------------|
+| POST   | `/eventos`                        | Crear nuevo evento                        | ✅ `admin_token`  |
+| GET    | `/eventos`                        | Listar todos los eventos                  | ✅ `user_token`   |
+| GET    | `/eventos/buscar?nombre=Recital`  | Buscar eventos por nombre                 | ✅ `user_token`   |
+| GET    | `/eventos/buscar?artista=Artista` | Buscar eventos por artista                | ✅ `user_token`   |
+| GET    | `/eventos/disponibles`            | Obtener eventos disponibles               | ✅ `user_token`   |
+| PUT    | `/eventos/:id`                    | Editar un evento existente                | ✅ `admin_token`  |
+| DELETE | `/eventos/:id`                    | Eliminar evento                           | ✅ `admin_token`  |
+
+---
+
+### 🛒 Compras
+
+| Método | Endpoint     | Descripción         | Autenticación |
+|--------|--------------|---------------------|---------------|
+| POST   | `/compras`   | Registrar una compra| ✅ `user_token` |
 
 ---
 
@@ -54,11 +95,18 @@ git clone https://github.com/LauraMont/API-UADE-G1.git
 Modificá src/main/resources/application.properties:
 
 ```bash
-spring.datasource.url=jdbc:mysql://localhost:3306/marketplace
+spring.application.name=marketplace
+spring.datasource.url=jdbc:mysql://localhost:3306/soundpass
+spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
 spring.datasource.username=root
-spring.datasource.password=tu_password
-
+spring.datasource.password=your_mysql_pass
 spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+server.port=4002
+application.security.jwt.secretKey:<key>
+
+application.security.jwt.expiration: 86400000
+
 ```
 
 ### 3. Ejecutá la aplicación
