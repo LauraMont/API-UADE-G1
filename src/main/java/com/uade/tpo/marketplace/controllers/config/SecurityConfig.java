@@ -44,6 +44,7 @@ public class SecurityConfig {
                         }))
                                 .csrf(AbstractHttpConfigurer::disable)
                                 .authorizeHttpRequests(req -> req.requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers("/ws/**").permitAll() // Permitir WebSocket
                                                 .requestMatchers(HttpMethod.DELETE, "/usuario/delete").hasAnyAuthority(Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.POST,"/compras").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
                                                 .requestMatchers("/eventos").permitAll()

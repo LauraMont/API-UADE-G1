@@ -10,6 +10,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.stereotype.Service;
 
+import com.uade.tpo.marketplace.entity.Usuario;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -35,8 +37,12 @@ public class JWTService {
     private String buildToken(
             UserDetails userDetails,
             long expiration) {
+                Usuario user = (Usuario) userDetails;
+
         return Jwts
                 .builder()
+                .claim("nombre", user.getNombre())
+                .claim("rol", user.getRol())
                 .subject(userDetails.getUsername()) //devuelve mail
                 .issuedAt(new Date(System.currentTimeMillis())) //fecha de emision del token
                 .expiration(new Date(System.currentTimeMillis() + expiration)) // fecha de expiracion del token
