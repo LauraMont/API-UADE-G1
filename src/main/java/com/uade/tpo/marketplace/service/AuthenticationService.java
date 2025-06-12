@@ -12,6 +12,7 @@ import com.uade.tpo.marketplace.controllers.auth.AuthenticationRequest;
 import com.uade.tpo.marketplace.controllers.auth.AuthenticationResponse;
 import com.uade.tpo.marketplace.controllers.auth.RegisterRequest;
 import com.uade.tpo.marketplace.controllers.config.JWTService;
+import com.uade.tpo.marketplace.entity.Rol;
 import com.uade.tpo.marketplace.entity.Usuario;
 import com.uade.tpo.marketplace.repository.UserRepository;
 
@@ -32,7 +33,7 @@ public class AuthenticationService {
                                 .email(request.getEmail())
                                 .password(passwordEncoder.encode(request.getPassword()))
                                 .fecha_registro(fecha_registro)
-                                .rol(request.getRol())
+                                .rol(request.getRol() != null? request.getRol() : Rol.USER)
                                 .build();
                 
 

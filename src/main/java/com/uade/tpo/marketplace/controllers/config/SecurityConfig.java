@@ -41,7 +41,8 @@ public class SecurityConfig {
                         return config;
                         }))
                                 .csrf(AbstractHttpConfigurer::disable)
-                                .authorizeHttpRequests(auth -> auth
+                                .authorizeHttpRequests(req -> req.requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers("/ws/**").permitAll() // Permitir WebSocket
                                                 .requestMatchers(HttpMethod.DELETE, "/usuario/delete").hasAnyAuthority(Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.POST,"/compras").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
                                                 .requestMatchers("/eventos").permitAll()
@@ -60,6 +61,7 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.POST,"/artista").hasAnyAuthority(Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.POST,"/locacion").hasAnyAuthority(Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.GET,"/locacion").hasAnyAuthority(Rol.ADMIN.name())
+
                                                 .anyRequest()
                                                 .authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

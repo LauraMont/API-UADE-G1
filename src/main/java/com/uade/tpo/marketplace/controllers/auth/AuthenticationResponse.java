@@ -1,6 +1,7 @@
 package com.uade.tpo.marketplace.controllers.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.uade.tpo.marketplace.entity.Rol;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
