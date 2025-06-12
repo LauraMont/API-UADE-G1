@@ -54,60 +54,63 @@ public class EventoServiceImpl implements EventoService {
     }
 
     public Evento crearEvento(
-    String nombre,
-    String descripcion,
-    Date fecha_hora,
-    String artistaId,
-    String locacionId,
-    EstadoEvento estado,
-    String categoriaId,
-    int pDescuento,
-    String imagenEvento,
-    String imagenZonas
-) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
+        String nombre,
+        String descripcion,
+        Date fecha_hora,
+        String artistaId,
+        String locacionId,
+        EstadoEvento estado,
+        String categoriaId,
+        int pDescuento,
+        String imagenEvento,
+        String imagenZonas
+    ) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
+        Long artistaIdLong = Long.parseLong(artistaId);
+        Long locacionIdLong = Long.parseLong(locacionId);
+        Long categoriaIdLong = Long.parseLong(categoriaId);
 
-    Long artistaIdLong = Long.parseLong(artistaId);
-    Long locacionIdLong = Long.parseLong(locacionId);
-    Long categoriaIdLong = Long.parseLong(categoriaId);
+        // Validar existencia
+        Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
+        if (artista == null) throw new ArtistaNotExistException();
 
-    // Validar existencia
-    Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
-    if (artista == null) throw new ArtistaNotExistException();
+        Locacion locacion = locacionRepository.findBy_Id(locacionIdLong);
+        if (locacion == null) throw new LocacionNotExistException();
 
-    Locacion locacion = locacionRepository.findBy_Id(locacionIdLong);
-    if (locacion == null) throw new LocacionNotExistException();
+        Categoria categoria = categoriaRepository.findBy_Id(categoriaIdLong);
+        if (categoria == null) throw new RuntimeException("Categoría no encontrada");
 
-    Categoria categoria = categoriaRepository.findBy_Id(categoriaIdLong);
+        // Validar que no exista otro evento en la misma locación y fecha
+        List<Evento> eventosMismaFechaYLocacion = eventoRepository
+            .findByLocacionIdAndFecha(locacionIdLong, fecha_hora);
 
-    // Validar que no exista otro evento en la misma locación y fecha
-    List<Evento> eventosMismaFechaYLocacion = eventoRepository
-        .findByLocacionIdAndFecha(locacionIdLong, fecha_hora); // Método custom que deberías crear
+        if (!eventosMismaFechaYLocacion.isEmpty()) {
+            throw new EventDuplicateException();
+        }
 
-    if (!eventosMismaFechaYLocacion.isEmpty()) {
-        throw new EventDuplicateException();
+        // Crear evento
+        Evento evento = new Evento(
+            nombre,
+            descripcion,
+            fecha_hora,
+            artista,
+            locacion,
+            estado,
+            categoria,
+            locacion.getCapacidad_total(),
+            pDescuento,
+            imagenEvento,
+            imagenZonas
+        );
+
+        return eventoRepository.save(evento);
     }
-
-    // Crear evento
-    Evento evento = new Evento(
-        nombre,
-        descripcion,
-        fecha_hora,
-        artista,
-        locacion,
-        estado,
-        categoria,
-        locacion.getCapacidad_total(),
-        pDescuento,
-        imagenEvento,
-        imagenZonas
-    );
-
-    return eventoRepository.save(evento);
-}
-
 
     @Override
     public Page<Evento> getEventos(PageRequest pageRequest) {
+        // If no page size is specified, use 6 as default
+        if (pageRequest.getPageSize() == 20) { // 20 is Spring's default
+            pageRequest = PageRequest.of(pageRequest.getPageNumber(), 6, pageRequest.getSort());
+        }
         return eventoRepository.findAll(pageRequest);
     }
 
@@ -117,21 +120,37 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId ,EstadoEvento estado, String categoriaId, int cant_entradas, String imagenEvento, String imagenZonas) throws EventNotExistException {
+    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int pdescuento, String imagenEvento, String imagenZonas) throws EventNotExistException {
         Long artistaIdLong = Long.parseLong(artistaId);
+        Long locacionIdLong = Long.parseLong(locacionId);
+        Long categoriaIdLong = Long.parseLong(categoriaId);
+
         Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
-        Locacion locacion = locacionRepository.findBy_Id(Long.parseLong(locacionId));
-        Categoria categoria = categoriaRepository.findBy_Id(Long.parseLong(categoriaId));
+        if (artista == null) throw new EventNotExistException();
+
+        Locacion locacion = locacionRepository.findBy_Id(locacionIdLong);
+        if (locacion == null) throw new EventNotExistException();
+
+        Categoria categoria = categoriaRepository.findBy_Id(categoriaIdLong);
+        if (categoria == null) throw new EventNotExistException();
+
         if (!eventoRepository.existsById(eventoId)) {
             throw new EventNotExistException();
         }
-        if(artista== null) {
-            throw new EventNotExistException();
-        }
-        if(locacion== null) {
-            throw new EventNotExistException();
-        }
-        eventoRepository.updateEvento(eventoId, nombre, descripcion, fecha_hora, artista, locacion, estado, categoria, cant_entradas, imagenEvento, imagenZonas);
+
+        eventoRepository.updateEvento(
+            eventoId, 
+            nombre, 
+            descripcion, 
+            fecha_hora, 
+            artista, 
+            locacion, 
+            estado, 
+            categoria, 
+            locacion.getCapacidad_total(), 
+            imagenEvento, 
+            imagenZonas
+        );
     }
 
     @Override
@@ -148,6 +167,15 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
+    public Page<Evento> buscarPorNombre(String nombre, PageRequest pageRequest) {
+        // If no page size is specified, use 6 as default
+        if (pageRequest.getPageSize() == 20) { // 20 is Spring's default
+            pageRequest = PageRequest.of(pageRequest.getPageNumber(), 6, pageRequest.getSort());
+        }
+        return eventoRepository.findByNombreContainingIgnoreCase(nombre, pageRequest);
+    }
+
+    @Override
     public List<Evento> buscarPorCategoria(String categoria) {
         Long categoriaId = categoriaRepository.findByNombreIgnoreCase(categoria).get().getId();
         return eventoRepository.findByCategoriaId(categoriaId);
@@ -155,7 +183,11 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public List<Evento> buscarPorArtista(String artista) {
-        return eventoRepository.findByArtistaContainingIgnoreCase(artista);
+        // Primero buscamos el artista por nombre
+        Artista artistaEntity = artistaRepository.findByNombreIgnoreCase(artista)
+            .orElseThrow(() -> new RuntimeException("Artista no encontrado"));
+        // Luego buscamos los eventos por el ID del artista
+        return eventoRepository.findByArtista_Id(artistaEntity.getId());
     }
 
     @Override
@@ -167,6 +199,29 @@ public class EventoServiceImpl implements EventoService {
     public int obtenerDescuentoPorEvento(Long eventoId) {
         Evento evento = eventoRepository.findBy_Id(eventoId);
         return evento.getPdescuento();
+    }
+
+    @Override
+    public Page<Evento> getEventosPorCategoria(Long categoriaId, PageRequest pageRequest) {
+        // If no page size is specified, use 6 as default
+        if (pageRequest.getPageSize() == 20) { // 20 is Spring's default
+            pageRequest = PageRequest.of(pageRequest.getPageNumber(), 6, pageRequest.getSort());
+        }
+        return eventoRepository.findByCategoriaId(categoriaId, pageRequest);
+    }
+
+    @Override
+    public List<Evento> buscarPorLocacion(Long locacionId) {
+        return eventoRepository.findByLocacionId(locacionId);
+    }
+
+    @Override
+    public Page<Evento> getEventosPorLocacion(Long locacionId, PageRequest pageRequest) {
+        // If no page size is specified, use 6 as default
+        if (pageRequest.getPageSize() == 20) { // 20 is Spring's default
+            pageRequest = PageRequest.of(pageRequest.getPageNumber(), 6, pageRequest.getSort());
+        }
+        return eventoRepository.findByLocacionId(locacionId, pageRequest);
     }
 
 }

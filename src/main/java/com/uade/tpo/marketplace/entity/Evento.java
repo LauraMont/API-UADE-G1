@@ -33,7 +33,7 @@ public class Evento {
         this.stockEntradas = cant_entradas;
         this.pdescuento = pdescuento;
         this.imagenEvento = imagenEvento;
-        this.imagenZonas = imagenEvento;
+        this.imagenZonas = imagenZonas;
     }
 
     @Id
@@ -75,5 +75,4 @@ public class Evento {
 
     @Column
     private String imagenZonas;
-
 }

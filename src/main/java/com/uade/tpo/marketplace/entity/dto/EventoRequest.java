@@ -19,5 +19,18 @@ public class EventoRequest {
     private int stockEntradas;
     private String imagenEvento;
     private String imagenZonas;
+
+    // Getters
+    public String getNombre() { return nombre; }
+    public String getDescripcion() { return descripcion; }
+    public Date getFechaHora() { return fechaHora; }
+    public String getArtista() { return artista; }
+    public String getLocacion() { return locacion; }
+    public EstadoEvento getEstado() { return estado; }
+    public String getCategoria() { return categoria; }
+    public int getPdescuento() { return pdescuento; }
+    public int getStockEntradas() { return stockEntradas; }
+    public String getImagenEvento() { return imagenEvento; }
+    public String getImagenZonas() { return imagenZonas; }
 }
 

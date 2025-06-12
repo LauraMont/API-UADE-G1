@@ -19,18 +19,26 @@ public interface EventoService {
 
     public Page<Evento> getEventos(PageRequest pageRequest);
     public Evento getEventoById(Long eventoId) throws EventNotExistException;
-    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId,String locacionId , EstadoEvento estado, String categoriaId, int cant_entradas, String imagenEvento, String imagenZonas) throws EventNotExistException;
+    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int pdescuento, String imagenEvento, String imagenZonas) throws EventNotExistException;
     public void deleteEvento(Long eventoId) throws EventNotExistException;
     public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int pDescuento, String imagenEvento, String imagenZonas) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException ;
 
     public List<Evento> buscarPorNombre(String nombre);
 
+    public Page<Evento> buscarPorNombre(String nombre, PageRequest pageRequest);
+
     public List<Evento> buscarPorCategoria(String categoria);
 
     public List<Evento> buscarPorArtista(String artista);
 
+    public List<Evento> buscarPorLocacion(Long locacionId);
+
+    public Page<Evento> getEventosPorLocacion(Long locacionId, PageRequest pageRequest);
+
     public List<Evento> obtenerDisponibles();
 
     public int obtenerDescuentoPorEvento(Long eventoId);
+    
+    public Page<Evento> getEventosPorCategoria(Long categoriaId, PageRequest pageRequest);
 }
 
