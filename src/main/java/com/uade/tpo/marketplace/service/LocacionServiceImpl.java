@@ -51,4 +51,9 @@ public class LocacionServiceImpl implements LocacionService {
                 .map(locacion -> new LocacionRequest(locacion.getNombre(), locacion.getDireccion(), locacion.getCapacidad_total()))
                 .orElse(null);
     }
+
+    @Override
+    public List<Locacion> getAllLocaciones() {
+        return locacionRepository.findAll();
+    }
 }

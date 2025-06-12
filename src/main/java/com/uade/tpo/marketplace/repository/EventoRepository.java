@@ -3,6 +3,8 @@ package com.uade.tpo.marketplace.repository;
 import java.sql.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -35,21 +37,33 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     @Query("SELECT e FROM Evento e WHERE LOWER(e.nombre) = LOWER(?1)")
     List<Evento> findByNombreContainingIgnoreCase(String nombre);
 
+    @Query("SELECT e FROM Evento e WHERE LOWER(e.nombre) LIKE LOWER(CONCAT('%', ?1, '%'))")
+    Page<Evento> findByNombreContainingIgnoreCase(String nombre, Pageable pageable);
+
     @Query("SELECT e FROM Evento e WHERE e.categoria = ?1")
     List<Evento> findByCategoriaId(Long categoriaId);
 
-    @Query("SELECT e FROM Evento e WHERE LOWER(e.artista) = LOWER(?1)")
+    @Query("SELECT e FROM Evento e WHERE e.categoria.id = ?1")
+    Page<Evento> findByCategoriaId(Long categoriaId, Pageable pageable);
+
+    @Query("SELECT e FROM Evento e WHERE LOWER(e.artista.nombre) LIKE LOWER(CONCAT('%', ?1, '%'))")
     List<Evento> findByArtistaContainingIgnoreCase(String artista);
 
     @Query("SELECT e FROM Evento e WHERE e.stockEntradas > ?1")
     List<Evento> findByStockEntradasGreaterThan(int cantidad);
 
-    @Query("SELECT e FROM Evento e WHERE e.artista = ?1")
-    List<Evento> findByArtista_Id(String artista);
+    @Query("SELECT e FROM Evento e WHERE e.artista.id = ?1")
+    List<Evento> findByArtista_Id(Long artistaId);
 
     @Query("SELECT e FROM Evento e WHERE e.id = ?1")
     Evento findBy_Id(Long id);
 
     @Query("SELECT e FROM Evento e WHERE e.locacion.id = ?1 AND e.fechaHora = ?2")
     List<Evento> findByLocacionIdAndFecha(Long locacionIdLong, Date fecha_hora);
+
+    @Query("SELECT e FROM Evento e WHERE e.locacion.id = ?1")
+    List<Evento> findByLocacionId(Long locacionId);
+
+    @Query("SELECT e FROM Evento e WHERE e.locacion.id = ?1")
+    Page<Evento> findByLocacionId(Long locacionId, Pageable pageable);
 }
