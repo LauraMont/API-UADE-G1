@@ -82,7 +82,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Festibal Rock\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"2\",\r\n  \"locacion\": \"2\",\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": \"1\"\r\n}",
+							"raw": "{\r\n  \"nombre\": \"Festival con descuento duplicado 123\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-12-12T21:00:00\",\r\n  \"artista\":2,\r\n  \"locacion\": 2,\r\n  \"estado\": \"ACTIVO\",\r\n  \"categoria\": 1,\r\n  \"pdescuento\": 20\r\n  \"imagenEvento\": \"https://placehold.co/600/00100B/5EDA57?text=Festival+con+descuento\"\r\n  \"imagenZonas\": \"https://placehold.co/600/00100B/5EDA57?text=Zonas+Festival\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -205,7 +205,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Recital 2\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"1\",\r\n  \"locacion\": \"1\",\r\n  \"estado\": \"FINALIZADO\",\r\n  \"categoria\": \"1\",\r\n  \"stockEntradas\": 100,\r\n  \"cantEntradas\": 50\r\n}\r\n",
+							"raw": "{\r\n  \"nombre\": \"Recital 2\",\r\n  \"descripcion\": \"Pop en vivo 231\",\r\n  \"fechaHora\": \"2025-08-12T21:00:00\",\r\n  \"artista\":\"1\",\r\n  \"locacion\": \"1\",\r\n  \"estado\": \"FINALIZADO\",\r\n  \"categoria\": \"1\",\r\n  \"stockEntradas\": 100,\r\n  \"cantEntradas\": 50,\r\n  \"pdescuento\":10\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -418,7 +418,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"eventoId\": 1,\r\n    \"butacas\":[\"B3\",\"B4\"]\r\n}",
+							"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"eventoId\": 1,\r\n    \"butacas\":[6]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -508,7 +508,23 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/locacion/2/zonas"
+						"url": {
+							"raw": "{{url}}/locacion/1/zonas?eventoId=9",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"locacion",
+								"1",
+								"zonas"
+							],
+							"query": [
+								{
+									"key": "eventoId",
+									"value": "9"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -524,6 +540,21 @@
 						"method": "GET",
 						"header": [],
 						"url": "{{url}}/locacion/zona/2/butacas"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Butacas Disponibles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/locacion/zona/2/butacas/disponibles"
 					},
 					"response": []
 				}

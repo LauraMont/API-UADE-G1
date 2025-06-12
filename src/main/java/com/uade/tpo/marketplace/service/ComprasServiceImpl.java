@@ -40,7 +40,7 @@ public class ComprasServiceImpl implements ComprasService{
     @Autowired
     private RenglonCompraRepository renglonCompraRepositor;
 
-    public Compra createCompra(Long idUsuario, Long idEvento, List<String> butacas) throws UserNotExistException, EventNotExistException, StockMaxReached, ButacaNoExisteException, ButacaVendidaException {
+    public Compra createCompra(Long idUsuario, Long idEvento, List<Long> butacas) throws UserNotExistException, EventNotExistException, StockMaxReached, ButacaNoExisteException, ButacaVendidaException {
         Usuario user = (Usuario) this.usuariosRepository.findById(idUsuario).orElseThrow(() -> new UserNotExistException());
         Evento evento = (Evento) this.eventosRepository.findById(idEvento).orElseThrow(() -> new EventNotExistException());
         if(evento.getStockEntradas() - butacas.size() <= 0) {
@@ -48,8 +48,8 @@ public class ComprasServiceImpl implements ComprasService{
         }
        Compra compra = this.comprasRepository.save(new Compra(user, evento,0));
        float totalCompra = 0;
-        for(String butaca : butacas) {
-            Butaca butacaExistente = (Butaca) this.butacaRepository.findByName(butaca);
+        for(Long butacaId : butacas) {
+            Butaca butacaExistente = (Butaca) this.butacaRepository.findBy_Id(butacaId);
             if(butacaExistente == null) {
                 throw new ButacaNoExisteException();
             }

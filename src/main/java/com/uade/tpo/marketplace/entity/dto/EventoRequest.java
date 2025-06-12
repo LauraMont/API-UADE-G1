@@ -1,8 +1,6 @@
 package com.uade.tpo.marketplace.entity.dto;
 import java.sql.Date;
-import java.util.List;
 
-import com.uade.tpo.marketplace.entity.Categoria;
 import com.uade.tpo.marketplace.enums.EstadoEvento;
 
 import lombok.Data;
@@ -17,7 +15,9 @@ public class EventoRequest {
     private String locacion;
     private EstadoEvento estado;
     private String categoria;
+    private int pdescuento;
     private int stockEntradas;
-
+    private String imagenEvento;
+    private String imagenZonas;
 }
 
