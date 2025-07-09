@@ -5,9 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.uade.tpo.marketplace.entity.Artista;
+import java.util.Optional;
 
 @Repository
 public interface ArtistaRepository extends JpaRepository<Artista, Long> {
-    @Query("SELECT e FROM Artista e WHERE e.id = ?1")
-    Artista findByArtista_Id(Long artistaId);
+    @Query("SELECT a FROM Artista a WHERE LOWER(a.nombre) = LOWER(?1)")
+    Optional<Artista> findByNombreIgnoreCase(String nombre);
+
+    @Query("SELECT a FROM Artista a WHERE a.id = ?1")
+    Artista findByArtista_Id(Long id);
 }
