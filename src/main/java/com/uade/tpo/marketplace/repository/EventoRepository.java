@@ -1,6 +1,6 @@
 package com.uade.tpo.marketplace.repository;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.uade.tpo.marketplace.entity.Artista;
 import com.uade.tpo.marketplace.entity.Categoria;
@@ -28,7 +29,7 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Evento e SET e.nombre = ?2, e.descripcion = ?3, e.fechaHora = ?4, e.artista = ?5,e.locacion=?6  ,e.estado = ?7, e.categoria = ?8, e.stockEntradas = ?9, e.imagenEvento = ?10, e.imagenZonas = ?11 WHERE e.id = ?1")
-    void updateEvento(Long eventoId, String nombre, String descripcion, Date fechaHora, Artista artista, Locacion locacion, EstadoEvento estado, Categoria categoria, int cantEntradas, String imagenEvento, String imagenZonas);
+    void updateEvento(Long eventoId, String nombre, String descripcion, Date fechaHora, Artista artista, Locacion locacion, EstadoEvento estado, Categoria categoria, int cantEntradas, byte[] imagenEvento, byte[] imagenZonas);
 
 
     @Query("SELECT e FROM Evento e WHERE e.nombre = ?1")
