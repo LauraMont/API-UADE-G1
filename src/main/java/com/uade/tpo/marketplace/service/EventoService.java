@@ -1,10 +1,12 @@
 package com.uade.tpo.marketplace.service;
 
-import java.sql.Date;
+import java.io.IOException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 import com.uade.tpo.marketplace.entity.Categoria;
@@ -19,9 +21,9 @@ public interface EventoService {
 
     public Page<Evento> getEventos(PageRequest pageRequest);
     public Evento getEventoById(Long eventoId) throws EventNotExistException;
-    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int pdescuento, String imagenEvento, String imagenZonas) throws EventNotExistException;
+    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int pdescuento, byte[] imagenEvento, byte[] imagenZonas) throws EventNotExistException, IOException;
     public void deleteEvento(Long eventoId) throws EventNotExistException;
-    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int pDescuento, String imagenEvento, String imagenZonas) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException ;
+    public Evento crearEvento(String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int pDescuento, byte[] imagenEvento, byte[] imagenZonas) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException, IOException;
 
     public List<Evento> buscarPorNombre(String nombre);
 

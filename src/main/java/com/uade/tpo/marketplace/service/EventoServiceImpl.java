@@ -1,29 +1,23 @@
 package com.uade.tpo.marketplace.service;
 
 import com.uade.tpo.marketplace.entity.Artista;
-import com.uade.tpo.marketplace.entity.Butaca;
 import com.uade.tpo.marketplace.entity.Categoria;
-// import com.uade.tpo.marketplace.controllers.EventoRequest;
 import com.uade.tpo.marketplace.entity.Evento;
 import com.uade.tpo.marketplace.entity.Locacion;
-import com.uade.tpo.marketplace.entity.Zona;
 import com.uade.tpo.marketplace.enums.EstadoEvento;
 import com.uade.tpo.marketplace.exceptions.ArtistaNotExistException;
 import com.uade.tpo.marketplace.exceptions.EventDuplicateException;
 import com.uade.tpo.marketplace.exceptions.EventNotExistException;
 import com.uade.tpo.marketplace.exceptions.LocacionNotExistException;
 import com.uade.tpo.marketplace.repository.ArtistaRepository;
-import com.uade.tpo.marketplace.repository.ButacaRepository;
 import com.uade.tpo.marketplace.repository.CategoriaRepository;
-import com.uade.tpo.marketplace.repository.EntradaRepository;
 import com.uade.tpo.marketplace.repository.EventoRepository;
 import com.uade.tpo.marketplace.repository.LocacionRepository;
-import com.uade.tpo.marketplace.repository.ZonasRepository;
 
-import java.sql.Date;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
-import org.apache.logging.log4j.spi.LocationAwareLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,12 +37,6 @@ public class EventoServiceImpl implements EventoService {
     @Autowired
     private LocacionRepository locacionRepository;
 
-    @Autowired
-    private ButacaRepository butacaRepository;
-
-    @Autowired
-    private ZonasRepository zonasRepository;
-
     EventoServiceImpl(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
     }
@@ -62,13 +50,12 @@ public class EventoServiceImpl implements EventoService {
         EstadoEvento estado,
         String categoriaId,
         int pDescuento,
-        String imagenEvento,
-        String imagenZonas
-    ) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException {
+        byte[] imagenEvento,
+        byte[] imagenZonas
+    ) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException, IOException {
         Long artistaIdLong = Long.parseLong(artistaId);
         Long locacionIdLong = Long.parseLong(locacionId);
         Long categoriaIdLong = Long.parseLong(categoriaId);
-
         // Validar existencia
         Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
         if (artista == null) throw new ArtistaNotExistException();
@@ -120,11 +107,10 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int pdescuento, String imagenEvento, String imagenZonas) throws EventNotExistException {
+    public void editEvento(Long eventoId, String nombre, String descripcion, Date fecha_hora, String artistaId, String locacionId, EstadoEvento estado, String categoriaId, int pdescuento, byte[] imagenEvento, byte[] imagenZonas) throws EventNotExistException, IOException {
         Long artistaIdLong = Long.parseLong(artistaId);
         Long locacionIdLong = Long.parseLong(locacionId);
         Long categoriaIdLong = Long.parseLong(categoriaId);
-
         Artista artista = artistaRepository.findByArtista_Id(artistaIdLong);
         if (artista == null) throw new EventNotExistException();
 
