@@ -35,7 +35,16 @@ public class LocacionServiceImpl implements LocacionService {
         char letraZona = 'A';
         locacionRepository.save(locacionExistente);
         for (ZonaRequest zona : zonas) {
-            Zona zonaCreada = zonasRepository.save(new Zona(zona.getPrecio_base(), locacionExistente, zona.getCantidad_butacas()));
+            String nombreZonaGenerado = "Zona " + letraZona;
+
+            Zona zonaCreada = new Zona();
+            zonaCreada.setNombre(nombreZonaGenerado);
+            zonaCreada.setPrecio_base(zona.getPrecio_base());
+            zonaCreada.setCantidad_butacas(zona.getCantidad_butacas());
+            zonaCreada.setLocacion(locacionExistente);
+
+            zonasRepository.save(zonaCreada);
+            //Zona zonaCreada = zonasRepository.save(new Zona(zona.getPrecio_base(), locacionExistente, zona.getCantidad_butacas()));
             for (int i = 0; i < zona.getCantidad_butacas(); i++) {
                 String identificador = letraZona + String.valueOf(i);
                 butacaRepository.save(new Butaca(identificador, zonaCreada));
@@ -49,14 +58,53 @@ public class LocacionServiceImpl implements LocacionService {
     @Override
     public LocacionRequest getLocacionById(Long locacionId) {
         return locacionRepository.findById(locacionId)
-                .map(locacion -> new LocacionRequest(locacion.getNombre(), locacion.getDireccion(), locacion.getCapacidad_total()))
-                .orElse(null);
+                .map(locacion -> {
+            List<ZonaRequest> zonasRequest = locacion.getZonas().stream()
+                .map(z -> new ZonaRequest(
+                    z.getNombre(),
+                    z.getPrecio_base(),
+                    z.getCantidad_butacas(),
+                    z.getId()
+                ))
+                .collect(Collectors.toList());
+
+                return new LocacionRequest(
+                    locacion.getId(),
+                    locacion.getNombre(),
+                    locacion.getDireccion(),
+                    locacion.getCapacidad_total(),
+                    zonasRequest
+                );
+        }).orElse(null);
     }
 
+//     public List<LocacionRequest> getAllLocaciones() {
+//     List<Locacion> entidades = locacionRepository.findAll();
+//     return entidades.stream()
+//         .map(locacion -> new LocacionRequest(locacion.getNombre(), locacion.getDireccion(), locacion.getCapacidad_total()))
+//         .collect(Collectors.toList());
+// }
     public List<LocacionRequest> getAllLocaciones() {
-    List<Locacion> entidades = locacionRepository.findAll();
-    return entidades.stream()
-        .map(locacion -> new LocacionRequest(locacion.getNombre(), locacion.getDireccion(), locacion.getCapacidad_total()))
+        List<Locacion> entidades = locacionRepository.findAll();
+        return entidades.stream()
+        .map(locacion -> {
+            List<ZonaRequest> zonasRequest = locacion.getZonas().stream()
+                .map(z -> new ZonaRequest(
+                    z.getNombre(),
+                    z.getPrecio_base(),
+                    z.getCantidad_butacas(),
+                    z.getId()
+                ))
+                .collect(Collectors.toList());
+
+            return new LocacionRequest(
+                locacion.getId(),
+                locacion.getNombre(),
+                locacion.getDireccion(),
+                locacion.getCapacidad_total(),
+                zonasRequest
+            );
+        })
         .collect(Collectors.toList());
 }
 

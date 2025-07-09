@@ -29,11 +29,12 @@ public class Zona {
 
     private int cantidad_butacas;
 
-    Zona() {
+    public Zona() {
     }
     public Zona(float precio_base, Locacion locacion, int cantidad_butacas) {
         this.precio_base = precio_base;
         this.locacion = locacion;
         this.cantidad_butacas = cantidad_butacas;
     }
+    
 }
