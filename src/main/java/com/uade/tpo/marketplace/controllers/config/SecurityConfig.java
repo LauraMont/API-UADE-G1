@@ -57,8 +57,9 @@ public class SecurityConfig {
                                                 .requestMatchers("/nombre/{nombre}").hasAnyAuthority(Rol.USER.name(), Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.POST,"/categoria").hasAnyAuthority(Rol.ADMIN.name())
                                                 .requestMatchers(HttpMethod.POST,"/artista").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.GET,"/artista").permitAll()
                                                 .requestMatchers(HttpMethod.POST,"/locacion").hasAnyAuthority(Rol.ADMIN.name())
-                                                .requestMatchers(HttpMethod.GET,"/locacion").hasAnyAuthority(Rol.ADMIN.name())
+                                                .requestMatchers(HttpMethod.GET,"/locacion").permitAll()
 
                                                 .anyRequest()
                                                 .authenticated())

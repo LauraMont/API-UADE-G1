@@ -1,9 +1,11 @@
 package com.uade.tpo.marketplace.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,8 @@ import com.uade.tpo.marketplace.entity.Artista;
 import com.uade.tpo.marketplace.entity.dto.ArtistaRequest;
 import com.uade.tpo.marketplace.exceptions.CategoryDuplicateException;
 import com.uade.tpo.marketplace.service.ArtistaService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/artista")
@@ -25,5 +29,11 @@ public class ArtistasController {
             throws CategoryDuplicateException {
         Artista result = artistaService.createArtista(artistaRequest.getNombre(), artistaRequest.getDescription(), artistaRequest.getGenero());
         return ResponseEntity.created(URI.create("/artista/" + result.getId())).body(result);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Artista>> getAllArtistas() {
+        List<Artista> artistas = artistaService.findAll();
+        return ResponseEntity.ok(artistas);
     }
 }

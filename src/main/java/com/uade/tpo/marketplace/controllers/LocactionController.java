@@ -52,6 +52,13 @@ public class LocactionController {
         return ResponseEntity.created(URI.create("/locacion/")).body(result);
     }
 
+    @GetMapping
+    public ResponseEntity<List<LocacionRequest>> getAllLocaciones() {
+        List<LocacionRequest> locaciones = locacionService.getAllLocaciones();
+        return ResponseEntity.ok(locaciones);
+    }
+
+
     @GetMapping("/id/{locacionId}")
     public ResponseEntity<LocacionRequest> getLocacionById(@PathVariable Long locacionId) throws LocacionNotExistException {
         LocacionRequest locacion = locacionService.getLocacionById(locacionId);

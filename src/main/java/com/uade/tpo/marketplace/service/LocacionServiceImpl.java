@@ -1,6 +1,7 @@
 package com.uade.tpo.marketplace.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,4 +52,12 @@ public class LocacionServiceImpl implements LocacionService {
                 .map(locacion -> new LocacionRequest(locacion.getNombre(), locacion.getDireccion(), locacion.getCapacidad_total()))
                 .orElse(null);
     }
+
+    public List<LocacionRequest> getAllLocaciones() {
+    List<Locacion> entidades = locacionRepository.findAll();
+    return entidades.stream()
+        .map(locacion -> new LocacionRequest(locacion.getNombre(), locacion.getDireccion(), locacion.getCapacidad_total()))
+        .collect(Collectors.toList());
+}
+
 }

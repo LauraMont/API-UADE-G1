@@ -15,4 +15,7 @@ public interface LocacionService {
     public LocacionRequest createLocacion(String nombre, String direccion, List<ZonaRequest> zonas) throws CategoryDuplicateException, LocacionDuplicadaException;
 
     public LocacionRequest getLocacionById(Long locacionId);
+
+    public List<LocacionRequest> getAllLocaciones();
+
 }
