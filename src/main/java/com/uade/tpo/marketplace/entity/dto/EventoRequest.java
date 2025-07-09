@@ -13,7 +13,7 @@ public class EventoRequest {
 
     private String nombre;
     private String descripcion;
-    private LocalDateTime fechaHora;
+    private String fechaHora;
     private String artista;
     private String locacion;
     private EstadoEvento estado;
@@ -22,5 +22,9 @@ public class EventoRequest {
     private int stockEntradas;
     private MultipartFile imagenEvento;
     private MultipartFile imagenZonas;
+
+    public EventoRequest(){
+        
+    }
 }
 

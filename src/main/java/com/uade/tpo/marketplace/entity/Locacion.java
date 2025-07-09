@@ -30,8 +30,8 @@ public class Locacion {
     @Column
     private int capacidad_total;
 
-    @OneToMany(mappedBy = "locacion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Zona> zonas;
+    // @OneToMany(mappedBy = "locacion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    // private List<Zona> zonas;
 
     public Locacion(String nombre, String direccion, int capacidad_total) {
         this.nombre = nombre;
@@ -40,7 +40,7 @@ public class Locacion {
     }
 
     public Locacion() {
-    this.zonas = new ArrayList<>();
+    // this.zonas = new ArrayList<>();
     }
     
 }

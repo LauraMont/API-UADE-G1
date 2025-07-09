@@ -16,9 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+
+
 
 @RestController
 @RequestMapping("/eventos")
@@ -79,8 +83,11 @@ public class EventoController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    //@RequestMapping(value = "/eventos", method=RequestMethod.POST)  
     public ResponseEntity<Evento> crearEvento(@ModelAttribute EventoRequest request) throws EventDuplicateException, ArtistaNotExistException, LocacionNotExistException, IOException {
-        Date date = Date.from(request.getFechaHora().atZone(ZoneId.systemDefault()).toInstant());
+        OffsetDateTime offsetDateTime = OffsetDateTime.parse(request.getFechaHora());
+        LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
+        Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());        
         byte[] imagenEventoBase64 = request.getImagenEvento().getBytes();
         byte[] imagenZonasBase64 = request.getImagenZonas().getBytes();
         Evento nuevoEvento = eventoService.crearEvento(
@@ -104,7 +111,9 @@ public class EventoController {
     }
     @PutMapping("/{id}") // only admin can edit events
     public ResponseEntity<String> editEvento(@PathVariable Long id, @RequestBody EventoRequest request) throws EventNotExistException, IOException {
-        Date date = Date.from(request.getFechaHora().atZone(ZoneId.systemDefault()).toInstant());
+        OffsetDateTime offsetDateTime = OffsetDateTime.parse(request.getFechaHora());
+        LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
+        Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());          
         byte[] imagenEventoBase64 = request.getImagenEvento().getBytes();
         byte[] imagenZonasBase64 = request.getImagenZonas().getBytes();
         eventoService.editEvento(

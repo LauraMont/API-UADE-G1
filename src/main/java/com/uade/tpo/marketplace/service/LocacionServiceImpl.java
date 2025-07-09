@@ -34,9 +34,10 @@ public class LocacionServiceImpl implements LocacionService {
         Locacion locacionExistente = new Locacion(nombre, direccion,totalButacas);
         char letraZona = 'A';
         locacionRepository.save(locacionExistente);
-        for (ZonaRequest zona : zonas) {
-            String nombreZonaGenerado = "Zona " + letraZona;
+        String nombreZonaGenerado = "Zona " + letraZona;
 
+        for (ZonaRequest zona : zonas) {
+        
             Zona zonaCreada = new Zona();
             zonaCreada.setNombre(nombreZonaGenerado);
             zonaCreada.setPrecio_base(zona.getPrecio_base());
@@ -59,7 +60,9 @@ public class LocacionServiceImpl implements LocacionService {
     public LocacionRequest getLocacionById(Long locacionId) {
         return locacionRepository.findById(locacionId)
                 .map(locacion -> {
-            List<ZonaRequest> zonasRequest = locacion.getZonas().stream()
+            List<Zona> zonas = zonasRepository.findByLocacionId(locacionId);
+
+            List<ZonaRequest> zonasRequest = zonas.stream()
                 .map(z -> new ZonaRequest(
                     z.getNombre(),
                     z.getPrecio_base(),
@@ -86,9 +89,12 @@ public class LocacionServiceImpl implements LocacionService {
 // }
     public List<LocacionRequest> getAllLocaciones() {
         List<Locacion> entidades = locacionRepository.findAll();
-        return entidades.stream()
+
+    return entidades.stream()
         .map(locacion -> {
-            List<ZonaRequest> zonasRequest = locacion.getZonas().stream()
+            List<Zona> zonas = zonasRepository.findByLocacionId(locacion.getId());
+
+            List<ZonaRequest> zonasRequest = zonas.stream()
                 .map(z -> new ZonaRequest(
                     z.getNombre(),
                     z.getPrecio_base(),
