@@ -32,14 +32,12 @@ public class LocacionServiceImpl implements LocacionService {
         }
         int totalButacas = zonas.stream().map(ZonaRequest::getCantidad_butacas).reduce(0, Integer::sum);        
         Locacion locacionExistente = new Locacion(nombre, direccion,totalButacas);
-        char letraZona = 'A';
         locacionRepository.save(locacionExistente);
-        String nombreZonaGenerado = "Zona " + letraZona;
 
         for (ZonaRequest zona : zonas) {
         
             Zona zonaCreada = new Zona();
-            zonaCreada.setNombre(nombreZonaGenerado);
+            zonaCreada.setNombre(zona.getNombre());
             zonaCreada.setPrecio_base(zona.getPrecio_base());
             zonaCreada.setCantidad_butacas(zona.getCantidad_butacas());
             zonaCreada.setLocacion(locacionExistente);
@@ -47,10 +45,9 @@ public class LocacionServiceImpl implements LocacionService {
             zonasRepository.save(zonaCreada);
             //Zona zonaCreada = zonasRepository.save(new Zona(zona.getPrecio_base(), locacionExistente, zona.getCantidad_butacas()));
             for (int i = 0; i < zona.getCantidad_butacas(); i++) {
-                String identificador = letraZona + String.valueOf(i);
+                String identificador = "Zona " + zona.getNombre() + " Butaca " + (i + 1);
                 butacaRepository.save(new Butaca(identificador, zonaCreada));
             }
-            letraZona++;
         }
         
         return new LocacionRequest(nombre, direccion, totalButacas);
