@@ -1,5 +1,7 @@
 package com.uade.tpo.marketplace.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +28,8 @@ public class RenglonDeCompra {
     @JoinColumn(name = "compra_id", referencedColumnName = "id", nullable = false)
     private Compra compra;
 
-    @OneToOne(mappedBy = "renglondecompra")
+    @OneToOne(mappedBy = "renglondecompra", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private Entrada entrada;
 
     RenglonDeCompra() {

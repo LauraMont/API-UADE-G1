@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -109,8 +110,8 @@ public class EventoController {
     public ResponseEntity<Evento> getEventoById(@PathVariable Long id) throws EventNotExistException {
         return ResponseEntity.ok(eventoService.getEventoById(id));
     }
-    @PutMapping("/{id}") // only admin can edit events
-    public ResponseEntity<String> editEvento(@PathVariable Long id, @RequestBody EventoRequest request) throws EventNotExistException, IOException {
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> editEvento(@PathVariable Long id, @ModelAttribute EventoRequest request) throws EventNotExistException, IOException {
         OffsetDateTime offsetDateTime = OffsetDateTime.parse(request.getFechaHora());
         LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
         Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());          
