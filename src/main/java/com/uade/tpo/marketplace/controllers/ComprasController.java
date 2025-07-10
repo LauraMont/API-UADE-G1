@@ -16,6 +16,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,5 +37,11 @@ public class ComprasController {
         Compra result = comprasService.createCompra(idUsuario, idProducto, butacas);
         CompraRequest response = new CompraRequest(result.getIdUsuario(), result.getIdProducto(), butacas);
         return ResponseEntity.created(URI.create("/compras/" + result.getIdCompra())).body(response);
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<Compra>> getComprasByUsuario(@PathVariable Long usuarioId) throws UserNotExistException {
+        List<Compra> compras = comprasService.getComprasByUsuarioId(usuarioId);
+        return ResponseEntity.ok(compras);
     }
 }

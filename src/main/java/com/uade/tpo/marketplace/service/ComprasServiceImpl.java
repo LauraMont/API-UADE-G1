@@ -70,4 +70,8 @@ public class ComprasServiceImpl implements ComprasService{
         this.eventosRepository.updateStock(idEvento, evento.getStockEntradas() - butacas.size());
         return compra;
     }
+
+    public List<Compra> getComprasByUsuarioId(Long usuarioId) throws UserNotExistException {
+        return this.comprasRepository.findByUsuarioId(usuarioId);
+    }
 }
