@@ -114,20 +114,28 @@ public class EventoController {
     public ResponseEntity<String> editEvento(@PathVariable Long id, @ModelAttribute EventoRequest request) throws EventNotExistException, IOException {
         OffsetDateTime offsetDateTime = OffsetDateTime.parse(request.getFechaHora());
         LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
-        Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());          
-        byte[] imagenEventoBase64 = request.getImagenEvento().getBytes();
-        byte[] imagenZonasBase64 = request.getImagenZonas().getBytes();
+        Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+        byte[] imagenEventoBase64 = null;
+        byte[] imagenZonasBase64 = null;
+        if (request.getImagenEvento() != null && !request.getImagenEvento().isEmpty()) {
+            imagenEventoBase64 = request.getImagenEvento().getBytes();
+        }
+        if (request.getImagenZonas() != null && !request.getImagenZonas().isEmpty()) {
+            imagenZonasBase64 = request.getImagenZonas().getBytes();
+        }
+
         eventoService.editEvento(
-            id, 
-            request.getNombre(), 
-            request.getDescripcion(), 
-            date, 
-            request.getArtista(), 
-            request.getLocacion(), 
-            request.getEstado(), 
-            request.getCategoria(), 
-            request.getPdescuento(), 
-            imagenEventoBase64, 
+            id,
+            request.getNombre(),
+            request.getDescripcion(),
+            date,
+            request.getArtista(),
+            request.getLocacion(),
+            request.getEstado(),
+            request.getCategoria(),
+            request.getPdescuento(),
+            imagenEventoBase64,
             imagenZonasBase64
         );
         return ResponseEntity.ok("Evento actualizado correctamente");
