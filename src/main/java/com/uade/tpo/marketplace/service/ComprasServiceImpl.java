@@ -61,6 +61,7 @@ public class ComprasServiceImpl implements ComprasService{
             RenglonDeCompra renglon = renglonCompraRepositor.save(new RenglonDeCompra(compra, butacaExistente));
             Entrada entrada = new Entrada(butacaExistente);
             entrada.setRenglondecompra(renglon);  // ← setear la relación correctamente
+            entrada.setEvento(evento);
             this.entradasRepository.save(entrada);
 
             totalCompra += butacaExistente.getZona().getPrecio_base();

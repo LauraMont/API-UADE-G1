@@ -28,6 +28,10 @@ public class Entrada {
     @JoinColumn(name = "butaca_id", referencedColumnName = "id")
     private Butaca butaca;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "evento_id", referencedColumnName = "id", nullable = false)
+    private Evento evento;
+
     Entrada() {
     }
     public Entrada(Butaca butaca) {
